@@ -24,6 +24,7 @@
   fprintf(stderr, "  --version                       Print the version of ios-sim\n");
   fprintf(stderr, "  --help                          Show this help text\n");
   fprintf(stderr, "  --verbose                       Set the output level to verbose\n");
+  fprintf(stderr, "  --exit                          Exit after startup\n");
   fprintf(stderr, "  --sdk <sdkversion>              The iOS SDK version to run the application on (defaults to the latest)\n");
   fprintf(stderr, "  --family <device family>        The device type that should be simulated (defaults to `iphone')\n");
   fprintf(stderr, "  --uuid <uuid>                   A UUID identifying the session (is that correct?)\n");
@@ -74,6 +75,9 @@
   if (started) {
     if (verbose) {
       nsprintf(@"Session started");
+    }
+    if (exit_on_startup) {
+      exit(EXIT_SUCCESS);
     }
   } else {
     nsprintf(@"Session could not be started: %@", error);
@@ -244,6 +248,8 @@
         exit(EXIT_SUCCESS);
       } else if (strcmp(argv[i], "--verbose") == 0) {
         verbose = YES;
+      } else if (strcmp(argv[i], "--exit") == 0) {
+        exit_on_startup = YES;
       }
       else if (strcmp(argv[i], "--sdk") == 0) {
         i++;
@@ -296,6 +302,18 @@
         [self printUsage];
         exit(EXIT_FAILURE);
       }
+    }
+    if (exit_on_startup) {
+      if (stdoutPath) {
+        NSLog(@"--exit is active, ignoring --stdout");
+      }
+      stdoutPath = @"/dev/null";
+      NSLog(@"stdoutPath: %@", stdoutPath);
+      if (stderrPath) {
+        NSLog(@"--exit is active, ignoring --stderr");
+      }
+      stderrPath = @"/dev/null";
+      NSLog(@"stderrPath: %@", stdoutPath);
     }
     NSMutableArray *args = [NSMutableArray arrayWithCapacity:(argc - i)];
     for (; i < argc; i++) {
