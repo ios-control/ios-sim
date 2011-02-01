@@ -166,14 +166,14 @@
 
   if (stderrPath) {
     stderrFileHandle = nil;
-  } else {
+  } else if (!exit_on_startup) {
     [self createStdioFIFO:&stderrFileHandle ofType:@"stderr" atPath:&stderrPath];
   }
   [config setSimulatedApplicationStdErrPath:stderrPath];
 
   if (stdoutPath) {
     stdoutFileHandle = nil;
-  } else {
+  } else if (!exit_on_startup) {
     [self createStdioFIFO:&stdoutFileHandle ofType:@"stdout" atPath:&stdoutPath];
   }
   [config setSimulatedApplicationStdOutPath:stdoutPath];
@@ -302,18 +302,6 @@
         [self printUsage];
         exit(EXIT_FAILURE);
       }
-    }
-    if (exit_on_startup) {
-      if (stdoutPath) {
-        NSLog(@"--exit is active, ignoring --stdout");
-      }
-      stdoutPath = @"/dev/null";
-      NSLog(@"stdoutPath: %@", stdoutPath);
-      if (stderrPath) {
-        NSLog(@"--exit is active, ignoring --stderr");
-      }
-      stderrPath = @"/dev/null";
-      NSLog(@"stderrPath: %@", stdoutPath);
     }
     NSMutableArray *args = [NSMutableArray arrayWithCapacity:(argc - i)];
     for (; i < argc; i++) {
