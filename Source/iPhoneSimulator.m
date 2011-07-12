@@ -101,7 +101,7 @@
 
 
 - (void)createStdioFIFO:(NSFileHandle **)fileHandle ofType:(NSString *)type atPath:(NSString **)path {
-  *path = [NSString stringWithFormat:@"/tmp/iphonesim-%@-pipe-%d", type, (int)time(NULL)];
+  *path = [NSString stringWithFormat:@"%@/iphonesim-%@-pipe-%d", NSTemporaryDirectory(), type, (int)time(NULL)];
   if (mkfifo([*path UTF8String], S_IRUSR | S_IWUSR) == -1) {
     nsprintf(@"Unable to create %@ named pipe `%@'", type, *path);
     exit(EXIT_FAILURE);
