@@ -97,6 +97,7 @@
   } else {
     nsprintf(str);
   }
+  [[notification object] readInBackgroundAndNotify];
 }
 
 
