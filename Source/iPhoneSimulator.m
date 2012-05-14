@@ -151,12 +151,15 @@
   DTiPhoneSimulatorSession *session;
   NSError *error;
 
+  NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+  if (![fileManager fileExistsAtPath:path]) {
+    nsprintf(@"Application path %@ doesn't exist!", path);
+    exit(EXIT_FAILURE);
+  }
+
   /* Create the app specifier */
   appSpec = [DTiPhoneSimulatorApplicationSpecifier specifierWithApplicationPath:path];
-  if (appSpec == nil) {
-    nsprintf(@"Could not load application specification for %s", path);
-    return EXIT_FAILURE;
-  }
+
   if (verbose) {
     nsprintf(@"App Spec: %@", appSpec);
     nsprintf(@"SDK Root: %@", sdkRoot);
