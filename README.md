@@ -24,12 +24,12 @@ Through homebrew:
 
 Download an archive:
 
-    $ curl -L https://github.com/Fingertips/ios-sim/zipball/1.3 -o ios-sim-1.3.zip
+    $ curl -L https://github.com/phonegap/ios-sim/zipball/1.3 -o ios-sim-1.3.zip
     $ unzip ios-sim-1.3.zip
 
 Or from a git clone:
 
-    $ git clone git://github.com/Fingertips/ios-sim.git
+    $ git clone git://github.com/phonegap/ios-sim.git
 
 Then build and install from the source root:
 
