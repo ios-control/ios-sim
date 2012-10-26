@@ -17,6 +17,7 @@
   BOOL exitOnStartup;
   BOOL verbose;
   BOOL alreadyPrintedData;
+  BOOL retinaDevice;
 }
 
 - (void)runWithArgc:(int)argc argv:(char **)argv;

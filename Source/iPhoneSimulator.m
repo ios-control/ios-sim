@@ -11,6 +11,13 @@
 #import <sys/types.h>
 #import <sys/stat.h>
 
+NSString *simulatorPrefrencesName = @"com.apple.iphonesimulator";
+NSString *deviceProperty = @"SimulateDevice";
+NSString *deviceIphoneRetina = @"iPhone (Retina 3.5-inch)";
+NSString *deviceIphone = @"iPhone";
+NSString *deviceIpad = @"iPad";
+NSString *deviceIpadRetina = @"iPad (Retina)";
+
 /**
  * A simple iPhoneSimulatorRemoteClient framework.
  */
@@ -30,6 +37,7 @@
   fprintf(stderr, "  --exit                          Exit after startup\n");
   fprintf(stderr, "  --sdk <sdkversion>              The iOS SDK version to run the application on (defaults to the latest)\n");
   fprintf(stderr, "  --family <device family>        The device type that should be simulated (defaults to `iphone')\n");
+  fprintf(stderr, "  --retina                        Start a retina device\n");
   fprintf(stderr, "  --uuid <uuid>                   A UUID identifying the session (is that correct?)\n");
   fprintf(stderr, "  --env <environment file path>   A plist file containing environment key-value pairs that should be set\n");
   fprintf(stderr, "  --setenv NAME=VALUE             Set an environment variable\n");
@@ -210,6 +218,8 @@
       [config setSimulatedDeviceFamily:[NSNumber numberWithInt:1]];
     }
   }
+    
+  [self changeDeviceType:family retina:retinaDevice];
 
   /* Start the session */
   session = [[[DTiPhoneSimulatorSession alloc] init] autorelease];
@@ -227,6 +237,29 @@
   return EXIT_SUCCESS;
 }
 
+- (void) changeDeviceType:(NSString *)family retina:(BOOL)retina {
+  NSString *devicePropertyValue;
+  if (retina) {
+    if (verbose) {
+      nsprintf(@"using retina");
+    }
+    if ([family isEqualToString:@"ipad"]) {
+      devicePropertyValue = deviceIpadRetina;
+    }
+    else {
+      devicePropertyValue = deviceIphoneRetina;
+    }
+  } else {
+    if ([family isEqualToString:@"ipad"]) {
+      devicePropertyValue = deviceIpad;
+    } else {
+      devicePropertyValue = deviceIphone;
+    }
+  }
+  CFPreferencesSetAppValue((CFStringRef)deviceProperty, (CFPropertyListRef)devicePropertyValue, (CFStringRef)simulatorPrefrencesName);
+  CFPreferencesAppSynchronize((CFStringRef)simulatorPrefrencesName);
+}
+
 
 /**
  * Execute 'main'
@@ -237,6 +270,7 @@
     exit(EXIT_FAILURE);
   }
 
+  retinaDevice = NO;
   exitOnStartup = NO;
   alreadyPrintedData = NO;
 
@@ -311,6 +345,9 @@
         i++;
         stderrPath = [[NSString stringWithUTF8String:argv[i]] expandPath];
         NSLog(@"stderrPath: %@", stderrPath);
+      } else if (strcmp(argv[i], "--retina") == 0) {
+          retinaDevice = YES;
+          i++;
       } else if (strcmp(argv[i], "--args") == 0) {
         i++;
         break;
