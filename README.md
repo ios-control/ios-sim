@@ -3,7 +3,7 @@ ios-sim
 
 The ios-sim tool is a command-line utility that launches an iOS application on
 the iOS Simulator. This allows for niceties such as automated testing without
-having to open Xcode.
+having to open XCode.
 
 Features
 --------
@@ -24,8 +24,8 @@ Through homebrew:
 
 Download an archive:
 
-    $ curl -L https://github.com/phonegap/ios-sim/zipball/1.3 -o ios-sim-1.3.zip
-    $ unzip ios-sim-1.3.zip
+    $ curl -L https://github.com/phonegap/ios-sim/zipball/1.5.2 -o ios-sim-1.5.2.zip
+    $ unzip ios-sim-1.5.2.zip
 
 Or from a git clone:
 
@@ -45,8 +45,3 @@ All rights reserved.
 This project is available under the MIT license. See [LICENSE][license].
 
 [license]: https://github.com/Fingertips/ios-sim/blob/master/LICENSE
-
-Acknowledgements
-----------------
-
-Thanks to [Fingertips](https://github.com/fingertips) for maintaining the repo previously at [https://github.com/fingertips/ios-sim](https://github.com/fingertips/ios-sim)

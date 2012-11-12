@@ -14,6 +14,7 @@
   DTiPhoneSimulatorSystemRoot *sdkRoot;
   NSFileHandle *stdoutFileHandle;
   NSFileHandle *stderrFileHandle;
+  BOOL startOnly;
   BOOL exitOnStartup;
   BOOL verbose;
   BOOL alreadyPrintedData;

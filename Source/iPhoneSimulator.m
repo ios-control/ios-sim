@@ -29,6 +29,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
   fprintf(stderr, "Commands:\n");
   fprintf(stderr, "  showsdks                        List the available iOS SDK versions\n");
   fprintf(stderr, "  launch <application path>       Launch the application at the specified path on the iOS Simulator\n");
+  fprintf(stderr, "  start                           Launch iOS Simulator without an app\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Options:\n");
   fprintf(stderr, "  --version                       Print the version of ios-sim\n");
@@ -83,6 +84,10 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
 
 
 - (void)session:(DTiPhoneSimulatorSession *)session didStart:(BOOL)started withError:(NSError *)error {
+  if (startOnly && session) {
+    nsprintf(@"Simulator started (no session)");
+    exit(EXIT_SUCCESS);
+  }
   if (started) {
     if (verbose) {
       nsprintf(@"Session started");
@@ -160,13 +165,13 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
   NSError *error;
 
   NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-  if (![fileManager fileExistsAtPath:path]) {
+  if (!startOnly && ![fileManager fileExistsAtPath:path]) {
     nsprintf(@"Application path %@ doesn't exist!", path);
     exit(EXIT_FAILURE);
   }
 
   /* Create the app specifier */
-  appSpec = [DTiPhoneSimulatorApplicationSpecifier specifierWithApplicationPath:path];
+  appSpec = startOnly ? nil : [DTiPhoneSimulatorApplicationSpecifier specifierWithApplicationPath:path];
 
   if (verbose) {
     nsprintf(@"App Spec: %@", appSpec);
@@ -273,23 +278,34 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
   retinaDevice = NO;
   exitOnStartup = NO;
   alreadyPrintedData = NO;
+  startOnly = strcmp(argv[1], "start") == 0;
 
   if (strcmp(argv[1], "showsdks") == 0) {
     exit([self showSDKs]);
-  } else if (strcmp(argv[1], "launch") == 0) {
-    if (argc < 3) {
+  } else if (strcmp(argv[1], "launch") == 0 || startOnly) {
+    if (strcmp(argv[1], "launch") == 0 && argc < 3) {
       fprintf(stderr, "Missing application path argument\n");
       [self printUsage];
       exit(EXIT_FAILURE);
     }
 
-    NSString *appPath = [[NSString stringWithUTF8String:argv[2]] expandPath];
+    NSString *appPath = nil;
+    int argOffset;
+    if (startOnly) {
+      argOffset = 2;
+    }
+    else {
+      argOffset = 3;
+      appPath = [[NSString stringWithUTF8String:argv[2]] expandPath];
+    }
+
     NSString *family = nil;
     NSString *uuid = nil;
     NSString *stdoutPath = nil;
     NSString *stderrPath = nil;
     NSMutableDictionary *environment = [NSMutableDictionary dictionary];
-    int i = 3;
+
+    int i = argOffset;
     for (; i < argc; i++) {
       if (strcmp(argv[i], "--version") == 0) {
         printf("%s\n", IOS_SIM_VERSION);
@@ -357,7 +373,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
         exit(EXIT_FAILURE);
       }
     }
-    NSMutableArray *args = [NSMutableArray arrayWithCapacity:(argc - i)];
+    NSMutableArray *args = [NSMutableArray arrayWithCapacity:MAX(argc - i,0)];
     for (; i < argc; i++) {
       [args addObject:[NSString stringWithUTF8String:argv[i]]];
     }
