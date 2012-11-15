@@ -16,6 +16,8 @@
   NSFileHandle *stderrFileHandle;
   BOOL startOnly;
   BOOL exitOnStartup;
+  BOOL shouldStartDebugger;
+  BOOL useGDB;
   BOOL verbose;
   BOOL alreadyPrintedData;
   BOOL retinaDevice;

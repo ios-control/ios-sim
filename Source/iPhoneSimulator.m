@@ -36,6 +36,8 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
   fprintf(stderr, "  --help                          Show this help text\n");
   fprintf(stderr, "  --verbose                       Set the output level to verbose\n");
   fprintf(stderr, "  --exit                          Exit after startup\n");
+  fprintf(stderr, "  --debug                         Attach LLDB to the application on startup\n");
+  fprintf(stderr, "  --use-gdb                       Use GDB instead of LLDB. (Requires --debug)\n");
   fprintf(stderr, "  --sdk <sdkversion>              The iOS SDK version to run the application on (defaults to the latest)\n");
   fprintf(stderr, "  --family <device family>        The device type that should be simulated (defaults to `iphone')\n");
   fprintf(stderr, "  --retina                        Start a retina device\n");
@@ -89,6 +91,17 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
     exit(EXIT_SUCCESS);
   }
   if (started) {
+      if (shouldStartDebugger) {
+        char*args[4] = { NULL, NULL, (char*)[[[session simulatedApplicationPID] description] UTF8String], NULL };
+        if (useGDB) {
+          args[0] = "gdb";
+          args[1] = "program";
+        } else {
+          args[0] = "lldb";
+          args[1] = "--attach-pid";
+        }
+        execvp(args[0], args);
+      }
     if (verbose) {
       nsprintf(@"Session started");
     }
@@ -186,7 +199,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
   config = [[[DTiPhoneSimulatorSessionConfig alloc] init] autorelease];
   [config setApplicationToSimulateOnStart:appSpec];
   [config setSimulatedSystemRoot:sdkRoot];
-  [config setSimulatedApplicationShouldWaitForDebugger: NO];
+  [config setSimulatedApplicationShouldWaitForDebugger:shouldStartDebugger];
 
   [config setSimulatedApplicationLaunchArgs:args];
   [config setSimulatedApplicationLaunchEnvironment:environment];
@@ -229,7 +242,6 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
   /* Start the session */
   session = [[[DTiPhoneSimulatorSession alloc] init] autorelease];
   [session setDelegate:self];
-  [session setSimulatedApplicationPID: [NSNumber numberWithInt:35]];
   if (uuid != nil){
     [session setUuid:uuid];
   }
@@ -317,6 +329,10 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
         verbose = YES;
       } else if (strcmp(argv[i], "--exit") == 0) {
         exitOnStartup = YES;
+      } else if (strcmp(argv[i], "--debug") == 0) {
+        shouldStartDebugger = YES;
+      } else if (strcmp(argv[i], "--use-gdb") == 0) {
+        useGDB = YES;
       }
       else if (strcmp(argv[i], "--sdk") == 0) {
         i++;
