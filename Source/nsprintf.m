@@ -9,7 +9,7 @@ int nsvfprintf (FILE *stream, NSString *format, va_list args) {
     int retval;
 
     NSString *str = (NSString *) CFStringCreateWithFormatAndArguments(NULL, NULL, (CFStringRef) format, args);
-    retval = fprintf(stream, "[DEBUG] %s\n", [str UTF8String]);
+    retval = fprintf(stream, "%s\n", [str UTF8String]);
     [str release];
 
     return retval;

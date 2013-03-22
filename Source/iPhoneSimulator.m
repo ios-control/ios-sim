@@ -79,10 +79,6 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
     [self removeStdioFIFO:stdoutFileHandle atPath:stdoutPath];
   }
 
-  if (error != nil) {
-    exit(EXIT_FAILURE);
-  }
-
   exit(EXIT_SUCCESS);
 }
 
