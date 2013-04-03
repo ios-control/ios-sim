@@ -48,6 +48,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
   fprintf(stderr, "  --setenv NAME=VALUE             Set an environment variable\n");
   fprintf(stderr, "  --stdout <stdout file path>     The path where stdout of the simulator will be redirected to (defaults to stdout of ios-sim)\n");
   fprintf(stderr, "  --stderr <stderr file path>     The path where stderr of the simulator will be redirected to (defaults to stderr of ios-sim)\n");
+  fprintf(stderr, "  --timeout <seconds>             The timeout time to wait for a response from the Simulator. Default value: 30 seconds\n");
   fprintf(stderr, "  --args <...>                    All following arguments will be passed on to the application\n");
 }
 
@@ -173,6 +174,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
                                  environment:(NSDictionary *)environment
                                   stdoutPath:(NSString *)stdoutPath
                                   stderrPath:(NSString *)stderrPath
+                                     timeout:(NSTimeInterval)timeout
                                         args:(NSArray *)args {
   DTiPhoneSimulatorApplicationSpecifier *appSpec;
   DTiPhoneSimulatorSessionConfig *config;
@@ -248,7 +250,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
     [session setUuid:uuid];
   }
 
-  if (![session requestStartWithConfig:config timeout:30 error:&error]) {
+  if (![session requestStartWithConfig:config timeout:timeout error:&error]) {
     nsprintf(@"Could not start simulator session: %@", error);
     return EXIT_FAILURE;
   }
@@ -322,6 +324,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
     NSString *uuid = nil;
     NSString *stdoutPath = nil;
     NSString *stderrPath = nil;
+    NSTimeInterval timeout = 30;
     NSMutableDictionary *environment = [NSMutableDictionary dictionary];
 
     int i = argOffset;
@@ -340,6 +343,11 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
         shouldStartDebugger = YES;
       } else if (strcmp(argv[i], "--use-gdb") == 0) {
         useGDB = YES;
+      } else if (strcmp(argv[i], "--timeout") == 0) {
+        if (i + 1 < argc) {
+          timeout = [[NSString stringWithUTF8String:argv[++i]] doubleValue];
+          NSLog(@"Timeout: %f second(s)", timeout);
+        }
       }
       else if (strcmp(argv[i], "--sdk") == 0) {
         i++;
@@ -413,6 +421,7 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
         environment:environment
          stdoutPath:stdoutPath
          stderrPath:stderrPath
+            timeout:timeout
                args:args];
   } else {
     if (argc == 2 && strcmp(argv[1], "--help") == 0) {
