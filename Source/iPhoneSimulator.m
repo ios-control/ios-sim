@@ -103,7 +103,15 @@ NSString *deviceIpadRetina = @"iPad (Retina)";
           args[0] = "lldb";
           args[1] = "--attach-pid";
         }
-        execvp(args[0], args);
+        // The parent process must live on to process the stdout/stderr fifos,
+        // so start the debugger as a child process.
+        pid_t child_pid = fork();
+        if (child_pid == 0) {
+            execvp(args[0], args);
+        } else if (child_pid < 0) {
+            nsprintf(@"Could not start debugger process: %@", errno);
+            exit(EXIT_FAILURE);
+        }
       }
     if (verbose) {
       nsprintf(@"Session started");
