@@ -22,6 +22,10 @@ Through homebrew:
 
     $ brew install ios-sim
 
+As of 1.8.2 on OS X 10.7.5, with node.js 0.10.20:
+
+    $ sudo npm install ios-sim -g
+
 Download an archive:
 
     $ curl -L https://github.com/phonegap/ios-sim/zipball/1.8 -o ios-sim-1.8.zip
