@@ -139,6 +139,7 @@ NSString* FindDeveloperDir() {
   fprintf(stderr, "  --env <environment file path>   A plist file containing environment key-value pairs that should be set\n");
   fprintf(stderr, "  --setenv NAME=VALUE             Set an environment variable\n");
   fprintf(stderr, "  --stdout <stdout file path>     The path where stdout of the simulator will be redirected to (defaults to stdout of ios-sim)\n");
+  fprintf(stderr, "  --unbuffered                    Do not buffer stdout\n");
   fprintf(stderr, "  --stderr <stderr file path>     The path where stderr of the simulator will be redirected to (defaults to stderr of ios-sim)\n");
   fprintf(stderr, "  --timeout <seconds>             The timeout time to wait for a response from the Simulator. Default value: 30 seconds\n");
   fprintf(stderr, "  --args <...>                    All following arguments will be passed on to the application\n");
@@ -508,6 +509,8 @@ NSString* FindDeveloperDir() {
           i++;
           stderrPath = [[NSString stringWithUTF8String:argv[i]] expandPath];
           NSLog(@"stderrPath: %@", stderrPath);
+      } else if (strcmp(argv[i], "--unbufferd")) {
+          setbuf(stdout, NULL);
       } else if (strcmp(argv[i], "--xctest") == 0) {
           i++;
           xctest = [[NSString stringWithUTF8String:argv[i]] expandPath];
