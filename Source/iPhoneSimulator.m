@@ -396,6 +396,14 @@ static void ChildSignal(int arg) {
   if ([config respondsToSelector:@selector(setDevice:)]) {
     // Xcode6+
     config.device = [self findDeviceWithFamily:family retina:retinaDevice isTallDevice:tallDevice is64Bit:is64BitDevice];
+
+    // The iOS 8 simulator treats stdout/stderr paths relative to the simulator's data directory.
+    // Create symbolic links in the data directory that points at the real stdout/stderr paths.
+    if ([config.simulatedSystemRoot.sdkVersion isEqual:@"8.0"]) {
+      NSString* dataPath = config.device.dataPath;
+      [[NSFileManager defaultManager] createSymbolicLinkAtPath:[dataPath stringByAppendingPathComponent:stdoutPath] withDestinationPath:stdoutPath error:NULL];
+      [[NSFileManager defaultManager] createSymbolicLinkAtPath:[dataPath stringByAppendingPathComponent:stderrPath] withDestinationPath:stderrPath error:NULL];
+    }
   } else {
     // Xcode5 or older
     NSString* devicePropertyValue = [self changeDeviceType:family retina:retinaDevice isTallDevice:tallDevice is64Bit:is64BitDevice];
