@@ -190,7 +190,7 @@ NSString* FindDeveloperDir() {
         SimDeviceSet* deviceSet = [simDeviceSet defaultSet];
         NSArray* devices = [deviceSet availableDevices];
         for (SimDevice* device in devices) {
-            nsfprintf(stderr, @"%@", device.deviceType.identifier);
+            nsfprintf(stderr, @"%@, %@", device.deviceType.identifier, device.runtime.versionString);
         }
     }
 
@@ -451,12 +451,25 @@ static void ChildSignal(int arg) {
 
     SimDeviceSet* deviceSet = [[self FindClassByName:@"SimDeviceSet"] defaultSet];
     NSArray* devices = [deviceSet availableDevices];
-    for (SimDevice* device in devices) {
-        SimDeviceType* type = device.deviceType;
-        if ([type.identifier isEqualToString:devTypeId]) {
-            return device;
-        }
-    }
+	NSArray* deviceTypeAndVersion = [devTypeId componentsSeparatedByString:@","];
+	if(deviceTypeAndVersion.count == 2) {
+		NSString* typeIdentifier = [deviceTypeAndVersion.firstObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		NSString* versionString = [deviceTypeAndVersion.lastObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];;
+		for (SimDevice* device in devices) {
+			if ([device.deviceType.identifier isEqualToString:typeIdentifier] && [device.runtime.versionString isEqualToString:versionString]) {
+				return device;
+			}
+		}
+	}
+	//maintain old behavior (if the device identifier doesn't have a version as part of the identifier, loop through to find the first matching)
+	else
+	{
+		for (SimDevice* device in devices) {
+			if ([device.deviceType.identifier isEqualToString:devTypeId]) {
+				return device;
+			}
+		}
+	}
     // Default to whatever is the first device
     return [devices count] > 0 ? [devices objectAtIndex:0] : nil;
 }
