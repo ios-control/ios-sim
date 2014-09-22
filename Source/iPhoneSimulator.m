@@ -31,6 +31,9 @@ NSString* deviceTypeIdIpadAir = @"com.apple.CoreSimulator.SimDeviceType.iPad-Air
 NSString* deviceTypeIdResizableIphone = @"com.apple.CoreSimulator.SimDeviceType.Resizable-iPhone";
 NSString* deviceTypeIdResizeableIpad = @"com.apple.CoreSimulator.SimDeviceType.Resizable-iPad";
 
+NSString *deviceRuntimeiOS71 = @"com.apple.CoreSimulator.SimRuntime.iOS-7-1";
+NSString *deviceRuntimeiOS80 = @"com.apple.CoreSimulator.SimRuntime.iOS-8-0";
+
 // The path within the developer dir of the private Simulator frameworks.
 NSString* const kSimulatorFrameworkRelativePathLegacy = @"Platforms/iPhoneSimulator.platform/Developer/Library/PrivateFrameworks/DVTiPhoneSimulatorRemoteClient.framework";
 NSString* const kSimulatorFrameworkRelativePath = @"../SharedFrameworks/DVTiPhoneSimulatorRemoteClient.framework";
@@ -395,7 +398,7 @@ static void ChildSignal(int arg) {
 
   if ([config respondsToSelector:@selector(setDevice:)]) {
     // Xcode6+
-    config.device = [self findDeviceWithFamily:family retina:retinaDevice isTallDevice:tallDevice is64Bit:is64BitDevice];
+    config.device = [self findDeviceWithFamily:family retina:retinaDevice isTallDevice:tallDevice is64Bit:is64BitDevice sdk:sdkRoot.sdkVersion];
   } else {
     // Xcode5 or older
     NSString* devicePropertyValue = [self changeDeviceType:family retina:retinaDevice isTallDevice:tallDevice is64Bit:is64BitDevice];
@@ -417,7 +420,7 @@ static void ChildSignal(int arg) {
   return EXIT_SUCCESS;
 }
 
-- (SimDevice*) findDeviceWithFamily:(NSString *)family retina:(BOOL)retina isTallDevice:(BOOL)isTallDevice is64Bit:(BOOL)is64Bit {
+- (SimDevice*) findDeviceWithFamily:(NSString *)family retina:(BOOL)retina isTallDevice:(BOOL)isTallDevice is64Bit:(BOOL)is64Bit sdk:(NSString *)sdkVersion {
     NSString* devTypeId = self->deviceTypeId;
 
     if (!devTypeId) {
@@ -450,11 +453,20 @@ static void ChildSignal(int arg) {
     }
 
     SimDeviceSet* deviceSet = [[self FindClassByName:@"SimDeviceSet"] defaultSet];
+    NSString *runtimeIdentifier = nil;
+    if ([sdkVersion isEqualToString:@"7.1"]) {
+        runtimeIdentifier = deviceRuntimeiOS71;
+    } else if ([sdkVersion isEqualToString:@"8.0"]) {
+        runtimeIdentifier = deviceRuntimeiOS80;
+    }
+
     NSArray* devices = [deviceSet availableDevices];
     for (SimDevice* device in devices) {
         SimDeviceType* type = device.deviceType;
-        if ([type.identifier isEqualToString:devTypeId]) {
-            return device;
+        SimRuntime *runtime = device.runtime;
+        if ([type.identifier isEqualToString:devTypeId] &&
+            [runtime.identifier isEqualToString:runtimeIdentifier]) {
+                return device;
         }
     }
     // Default to whatever is the first device
