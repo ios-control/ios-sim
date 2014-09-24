@@ -133,7 +133,7 @@ NSString* GetXcodeVersion() {
     } else {
         NSArray* parts = [output componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if ([parts count] >= 2) {
-            return parts[1];
+            return [[parts objectAtIndex:1] retain];
         }
     }
     return output;
@@ -503,7 +503,7 @@ static void ChildSignal(int arg) {
     NSArray* devices = [deviceSet availableDevices];
 	NSArray* deviceTypeAndVersion = [devTypeId componentsSeparatedByString:@","];
 	if(deviceTypeAndVersion.count == 2) {
-		NSString* typeIdentifier = [deviceTypeAndVersion.firstObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		NSString* typeIdentifier = [[deviceTypeAndVersion objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		NSString* versionString = [deviceTypeAndVersion.lastObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];;
 		for (SimDevice* device in devices) {
 			if ([device.deviceType.identifier isEqualToString:typeIdentifier] && [device.runtime.versionString isEqualToString:versionString]) {
