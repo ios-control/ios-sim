@@ -5,7 +5,7 @@ end
 desc "Create a Release build"
 task :build do
   sh "xcodebuild clean -project ios-sim.xcodeproj"
-  sh "xcodebuild -project ios-sim.xcodeproj -configuration Release SYMROOT=build"
+  sh "xcodebuild ARCHS='x86_64' VALID_ARCHS='x86_64' -project ios-sim.xcodeproj -configuration Release SYMROOT=build"
 end
 
 desc "Install a Release build"
