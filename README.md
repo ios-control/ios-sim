@@ -55,6 +55,9 @@ DEPRECATED in 3.x, use devicetypeid instead:
 
 Installation
 ------------
+With homebrew:
+
+    $ brew install ios-sim
 
 With node.js (at least 0.10.20):
 
