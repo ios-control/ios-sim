@@ -24,8 +24,9 @@
   "author": "Shazron Abdullah",
   "license": "MIT",
   "dependencies": {
-      "simctl": "^0.0.7",
-      "nopt": "1.0.9",
-      "bplist-parser" : "^0.0.6"
+    "bplist-parser": "^0.0.6",
+    "nopt": "1.0.9",
+    "plist": "^1.2.0",
+    "simctl": "^0.0.7"
   }
 }
