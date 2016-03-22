@@ -27,7 +27,8 @@ var path = require('path'),
     help = require('./help'),
     util = require('util'),
     simctl,
-    bplist;
+	bplist,
+	plist;
     
 function findFirstAvailableDevice(list) {
     /*
@@ -315,11 +316,21 @@ var lib = {
         bplist.parseFile(info_plist_path, function(err, obj) {
           
             if (err) {
-              throw err;
-            }
+				// try to see if a regular plist parser will work
+		        if (!plist) {
+		            plist = require('plist');
+		        }
+				obj = plist.parse(fs.readFileSync(info_plist_path, 'utf8'));
+				if (obj) {
+				  app_identifier = obj.CFBundleIdentifier;
+				} else {
+				  throw err;
+				}
+            } else {
+           		app_identifier = obj[0].CFBundleIdentifier;
+			}
 
-            app_identifier = obj[0].CFBundleIdentifier;
-            argv = argv || [];
+             argv = argv || [];
 
             // get the deviceid from --devicetypeid
             // --devicetypeid is a string in the form "devicetype, runtime_version" (optional: runtime_version)

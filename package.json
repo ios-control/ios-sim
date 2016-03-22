@@ -26,6 +26,8 @@
   "dependencies": {
       "simctl": "^0.0.9",
       "nopt": "1.0.9",
-      "bplist-parser" : "^0.0.6"
+      "bplist-parser" : "^0.0.6",
+      "plist": "^1.2.0"
+
   }
 }
