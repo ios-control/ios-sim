@@ -59,6 +59,9 @@ Usage
 
 Installation
 ------------
+With homebrew:
+
+    $ brew install ios-sim
 
 Choose one of the following installation methods.
 
