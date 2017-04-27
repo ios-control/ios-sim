@@ -194,7 +194,7 @@ function getDeviceFromDeviceTypeId(devicetypeid) {
     }
 
     // prepend iOS to runtime version, if necessary
-    if (ret_obj.runtime.indexOf('iOS') === -1) {
+    if (ret_obj.runtime.indexOf('OS') === -1) {
         ret_obj.runtime = util.format('iOS %s', ret_obj.runtime);
     }
 
