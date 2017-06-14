@@ -312,7 +312,7 @@ var lib = {
         list = [];
         var remove = function(devicename, runtime) {
             // remove "iOS" prefix in runtime, remove prefix "com.apple.CoreSimulator.SimDeviceType." in id
-            list.push(util.format('%s, %s', name_id_map[ devicename ].replace(/^com.apple.CoreSimulator.SimDeviceType./, ''), runtime.replace(/^iOS /, '')));
+            list.push(util.format('%s, %s', name_id_map[ filterDeviceName(deviceName) ].replace(/^com.apple.CoreSimulator.SimDeviceType./, ''), runtime.replace(/^iOS /, '')));
         };
 
         var cur = function(devicename) {
