@@ -68,6 +68,12 @@ Install using node.js (at least 0.10.20):
 
     $ npm install ios-sim -g
 
+### Homebrew
+
+```
+    $ brew install ios-sim
+```
+
 ### Zip
 
 Download a zip file:
