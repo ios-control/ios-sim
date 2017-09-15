@@ -265,21 +265,18 @@ function filterDeviceName(deviceName) {
     return deviceName;
 }
 
-// Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
-// `iPad Pro` in iOS 9.3 has mapped to `iPad Pro (9.7 inch)`
-// `Apple TV 1080p` has mapped to `Apple TV`
-function deviceNameMapFix(deviceName) {
+function fixNameKey(array, mapping) {
+    if (!array || !mapping) {
+        return array;
+    }
 
-    var m = {
-        'iPhone 8': 'iPhone2017-A',
-        'iPhone 8 Plus': 'iPhone2017-B',
-        'iPhone X': 'iPhone2017-C',
-        'Apple Watch Series 3 - 38mm': 'Watch2017 - 38mm',
-        'Apple Watch Series 3 - 42mm': 'Watch2017 - 42mm',
-        'Apple TV 1080p': 'Apple TV',
-        'iPad Pro': 'iPad Pro (9.7-inch)'
-    };
-    return m[deviceName];
+    return array.map(function(elem){
+        var name = mapping[elem.name];
+        if (name) {
+            elem.name = name;
+        }
+        return elem;
+    });
 }
 
 var lib = {
@@ -320,6 +317,28 @@ var lib = {
         var options = { silent: true };
         var list = simctl.list(options).json;
 
+        // Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
+        var deviceTypeNameMap = {
+            'iPhone2017-A': 'iPhone 8',
+            'iPhone2017-B': 'iPhone 8 Plus',
+            'iPhone2017-C': 'iPhone X',
+            'Watch2017 - 38mm': 'Apple Watch Series 3 - 38mm',
+            'Watch2017 - 42mm': 'Apple Watch Series 3 - 42mm'
+        };
+        list.devicetypes = fixNameKey(list.devicetypes, deviceTypeNameMap);
+
+        // `iPad Pro` in iOS 9.3 has mapped to `iPad Pro (9.7 inch)`
+        // `Apple TV 1080p` has mapped to `Apple TV`
+        var deviceNameMap = {
+            'Apple TV 1080p': 'Apple TV',
+            'iPad Pro': 'iPad Pro (9.7-inch)'
+        };
+        Object.keys(list.devices).forEach(function(key) {
+            list.devices[key] = fixNameKey(list.devices[key], deviceNameMap);
+        });
+
+        //console.log(list.devices['tvOS 11.0']);
+
         var druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true);
         var name_id_map = {};
 
@@ -344,12 +363,10 @@ var lib = {
             var dname = filterDeviceName(deviceName);
 
             if (!(dname in name_id_map)) {
-                var fixedname = deviceNameMapFix(dname);
-                if (fixedname) {
-                    dname = filterDeviceName(fixedname);
-                } else {
-                    continue;
-                }
+
+                console.log('----> DNAME', dname);
+                console.log('----> RUNTIMES', runtimes);
+                continue;
             }
 
             runtimes.forEach(cur(dname));
