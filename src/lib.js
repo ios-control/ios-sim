@@ -265,6 +265,23 @@ function filterDeviceName(deviceName) {
     return deviceName;
 }
 
+// Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
+// `iPad Pro` in iOS 9.3 has mapped to `iPad Pro (9.7 inch)`
+// `Apple TV 1080p` has mapped to `Apple TV`
+function deviceNameMapFix(deviceName) {
+
+    var m = {
+        "iPhone 8": "iPhone2017-A",
+        "iPhone 8 Plus": "iPhone2017-B",
+        "iPhone X": "iPhone2017-C",
+        "Apple Watch Series 3 - 38mm": "Watch2017 - 38mm",
+        "Apple Watch Series 3 - 42mm": "Watch2017 - 42mm",
+        "Apple TV 1080p" : "Apple TV",
+        "iPad Pro" : "iPad Pro (9.7-inch)"
+    };
+    return m[deviceName];
+}
+
 var lib = {
 
     init: function() {
@@ -327,7 +344,12 @@ var lib = {
             var dname = filterDeviceName(deviceName);
 
             if (!(dname in name_id_map)) {
-                continue;
+                var fixedname = deviceNameMapFix(dname);
+                if (fixedname) {
+                    dname = filterDeviceName(fixedname);
+                } else {
+                    continue;
+                }
             }
 
             runtimes.forEach(cur(dname));
