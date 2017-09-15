@@ -141,6 +141,7 @@ function getDeviceFromDeviceTypeId(devicetypeid) {
 
     var options = { 'silent': true };
     var list = simctl.list(options).json;
+    list = fixSimCtlList(list);
 
     var arr = [];
     if (devicetypeid) {
@@ -279,6 +280,30 @@ function fixNameKey(array, mapping) {
     });
 }
 
+function fixSimCtlList(list) {
+    // Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
+    var deviceTypeNameMap = {
+        'iPhone2017-A': 'iPhone 8',
+        'iPhone2017-B': 'iPhone 8 Plus',
+        'iPhone2017-C': 'iPhone X',
+        'Watch2017 - 38mm': 'Apple Watch Series 3 - 38mm',
+        'Watch2017 - 42mm': 'Apple Watch Series 3 - 42mm'
+    };
+    list.devicetypes = fixNameKey(list.devicetypes, deviceTypeNameMap);
+
+    // `iPad Pro` in iOS 9.3 has mapped to `iPad Pro (9.7 inch)`
+    // `Apple TV 1080p` has mapped to `Apple TV`
+    var deviceNameMap = {
+        'Apple TV 1080p': 'Apple TV',
+        'iPad Pro': 'iPad Pro (9.7-inch)'
+    };
+    Object.keys(list.devices).forEach(function(key) {
+        list.devices[key] = fixNameKey(list.devices[key], deviceNameMap);
+    });
+
+    return list;
+}
+
 var lib = {
 
     init: function() {
@@ -301,6 +326,7 @@ var lib = {
     showsdks: function(args) {
         var options = { silent: true, runtimes: true };
         var list = simctl.list(options).json;
+        list = fixSimCtlList(list);
 
         console.log('Simulator SDK Roots:');
         list.runtimes.forEach(function(runtime) {
@@ -316,28 +342,7 @@ var lib = {
     getdevicetypes: function(args) {
         var options = { silent: true };
         var list = simctl.list(options).json;
-
-        // Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
-        var deviceTypeNameMap = {
-            'iPhone2017-A': 'iPhone 8',
-            'iPhone2017-B': 'iPhone 8 Plus',
-            'iPhone2017-C': 'iPhone X',
-            'Watch2017 - 38mm': 'Apple Watch Series 3 - 38mm',
-            'Watch2017 - 42mm': 'Apple Watch Series 3 - 42mm'
-        };
-        list.devicetypes = fixNameKey(list.devicetypes, deviceTypeNameMap);
-
-        // `iPad Pro` in iOS 9.3 has mapped to `iPad Pro (9.7 inch)`
-        // `Apple TV 1080p` has mapped to `Apple TV`
-        var deviceNameMap = {
-            'Apple TV 1080p': 'Apple TV',
-            'iPad Pro': 'iPad Pro (9.7-inch)'
-        };
-        Object.keys(list.devices).forEach(function(key) {
-            list.devices[key] = fixNameKey(list.devices[key], deviceNameMap);
-        });
-
-        //console.log(list.devices['tvOS 11.0']);
+        list = fixSimCtlList(list);
 
         var druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true);
         var name_id_map = {};
