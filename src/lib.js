@@ -270,7 +270,7 @@ function fixNameKey(array, mapping) {
         return array;
     }
 
-    return array.map(function(elem){
+    return array.map(function(elem) {
         var name = mapping[elem.name];
         if (name) {
             elem.name = name;
