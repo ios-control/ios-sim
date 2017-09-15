@@ -271,13 +271,13 @@ function filterDeviceName(deviceName) {
 function deviceNameMapFix(deviceName) {
 
     var m = {
-        "iPhone 8": "iPhone2017-A",
-        "iPhone 8 Plus": "iPhone2017-B",
-        "iPhone X": "iPhone2017-C",
-        "Apple Watch Series 3 - 38mm": "Watch2017 - 38mm",
-        "Apple Watch Series 3 - 42mm": "Watch2017 - 42mm",
-        "Apple TV 1080p" : "Apple TV",
-        "iPad Pro" : "iPad Pro (9.7-inch)"
+        'iPhone 8': 'iPhone2017-A',
+        'iPhone 8 Plus': 'iPhone2017-B',
+        'iPhone X': 'iPhone2017-C',
+        'Apple Watch Series 3 - 38mm': 'Watch2017 - 38mm',
+        'Apple Watch Series 3 - 42mm': 'Watch2017 - 42mm',
+        'Apple TV 1080p': 'Apple TV',
+        'iPad Pro': 'iPad Pro (9.7-inch)'
     };
     return m[deviceName];
 }
