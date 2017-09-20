@@ -326,7 +326,6 @@ var lib = {
     showsdks: function(args) {
         var options = { silent: true, runtimes: true };
         var list = simctl.list(options).json;
-        list = fixSimCtlList(list);
 
         console.log('Simulator SDK Roots:');
         list.runtimes.forEach(function(runtime) {
