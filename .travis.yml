@@ -1,10 +1,11 @@
-language: node_js
+osx_image: xcode8.3
 sudo: false
+env:
+  matrix:
+  - TRAVIS_NODE_VERSION: '4.2'
+  - TRAVIS_NODE_VERSION: '6.11'
 git:
   depth: 10
-node_js:
-- '4'
-- '6'
 install:
 - npm install
 script:
