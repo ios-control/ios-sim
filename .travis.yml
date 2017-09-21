@@ -3,8 +3,8 @@ osx_image: xcode8.3
 sudo: false
 env:
   matrix:
-  - TRAVIS_NODE_VERSION: '4.2'
-  - TRAVIS_NODE_VERSION: '6.11'
+  - TRAVIS_NODE_VERSION: '4'
+  - TRAVIS_NODE_VERSION: '6'
 git:
   depth: 10
 before_install:
