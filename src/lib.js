@@ -110,7 +110,7 @@ function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly) 
 function findAvailableRuntime(list, device_name) {
 
     var all_druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true);
-    var druntime = all_druntimes[ device_name ];
+    var druntime = all_druntimes[ filterDeviceName(device_name) ] || all_druntimes[ device_name ];
     var runtime_found = druntime && druntime.length > 0;
 
     if (!runtime_found) {
@@ -199,7 +199,7 @@ function getDeviceFromDeviceTypeId(devicetypeid) {
         // found the runtime, now find the actual device matching devicename
         if (deviceGroup === ret_obj.runtime) {
             return list.devices[deviceGroup].some(function(device) {
-                if (device.name === ret_obj.name) {
+                if (filterDeviceName(device.name) === filterDeviceName(ret_obj.name)) {
                     ret_obj.id = device.udid;
                     return true;
                 }
@@ -255,6 +255,15 @@ function withInjectedEnvironmentVariablesToProcess(process, envVariables, action
 
     // restore old envs
     process.env = oldVariables;
+}
+
+// replace hyphens in iPad Pro name which differ in 'Device Types' and 'Devices'
+function filterDeviceName(deviceName) {
+    // replace hyphens in iPad Pro name which differ in 'Device Types' and 'Devices'
+    if (deviceName.indexOf('iPad Pro') === 0) {
+        return deviceName.replace(/\-/g, ' ').trim();
+    }
+    return deviceName;
 }
 
 function fixNameKey(array, mapping) {
@@ -340,7 +349,7 @@ var lib = {
         var name_id_map = {};
 
         list.devicetypes.forEach(function(device) {
-            name_id_map[ device.name ] = device.identifier;
+            name_id_map[ filterDeviceName(device.name) ] = device.identifier;
         });
 
         list = [];
@@ -357,8 +366,9 @@ var lib = {
 
         for (var deviceName in druntimes) {
             var runtimes = druntimes[ deviceName ];
+            var dname = filterDeviceName(deviceName);
 
-            if (!(deviceName in name_id_map)) {
+            if (!(dname in name_id_map)) {
                 continue;
             }
 
