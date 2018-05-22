@@ -8,6 +8,7 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm cache clean
+  - npm install -g npm@3
   - npm install
 
 build: off
