@@ -262,6 +262,10 @@ function filterDeviceName(deviceName) {
     // replace hyphens in iPad Pro name which differ in 'Device Types' and 'Devices'
     if (deviceName.indexOf('iPad Pro') === 0) {
         return deviceName.replace(/\-/g, ' ').trim();
+    } else if (deviceName.indexOf('iPhone Xs') === 0) {
+      return deviceName.replace('Xs', 'XS');
+    } else if (deviceName.indexOf('iPhone Xʀ') === 0) {
+      return deviceName.replace('Xʀ', 'XR');
     }
     return deviceName;
 }
