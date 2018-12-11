@@ -1,21 +1,21 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/0kw833771uu622fs?svg=true)](https://ci.appveyor.com/project/shazron/ios-sim)
-[![Build Status](https://travis-ci.org/phonegap/ios-sim.svg?branch=master)](https://travis-ci.org/phonegap/ios-sim)
+[![NPM](https://nodei.co/npm/ios-sim.png?compact=true)](https://nodei.co/npm/ios-sim/)
+[![Build status](https://ci.appveyor.com/api/projects/status/xh7auct40k5oxwjg/branch/master?svg=true
+)](https://ci.appveyor.com/project/shazron/ios-sim-bn5fo)
+[![Build Status](https://travis-ci.org/ios-control/ios-sim.svg?branch=master)](https://travis-ci.org/ios-control/ios-sim)
 
 ios-sim
 =======
 
-Supports Xcode 8 and greater only since version 5.x.
+Supports Xcode 8 and greater only, since version 5.x.
 
-The ios-sim tool is a command-line utility that launches an iOS application on the iOS Simulator. This allows for niceties such as automated testing without having to open Xcode.
+The `ios-sim` tool is a command-line utility that launches an iOS application on the iOS Simulator. This allows for niceties such as automated testing without having to open Xcode.
 
 Features
 --------
 
-* Choose the device family to simulate, i.e. iPhone or iPad. Run using "showdevicetypes" option to see available device types, and pass it in as the "devicetypeid" parameter.
+* Choose the device family to simulate, i.e. iPhone or iPad. Run using `showdevicetypes` option to see available device types, and pass it in as the `devicetypeid` parameter.
 
 See the `--help` option for more info.
-
-The unimplemented options below are in the [backlog](https://github.com/phonegap/ios-sim/milestones/ios-sim%204.2.0)
 
 Usage
 -----
@@ -64,7 +64,7 @@ Choose one of the following installation methods.
 
 ### Node JS
 
-Install using node.js (at least 0.10.20):
+Install using Node.js (version 0.10.20 or greater):
 
     $ npm install ios-sim -g
 
@@ -84,17 +84,15 @@ Download using git clone:
 Troubleshooting
 ---------------
 
-Make sure you enable Developer Mode on your machine:
+Be sure to enable Developer Mode on your machine:
 
     $ DevToolsSecurity -enable
 
-Make sure multiple instances of launchd_sim are not running:
+Ensure that multiple instances of `launchd_sim` are not running:
 
     $ killall launchd_sim
 
 License
 -------
 
-This project is available under the MIT license. See [LICENSE][license].
-
-[license]: https://github.com/phonegap/ios-sim/blob/master/LICENSE
+This project is available under the MIT license. See [`LICENSE`][./LICENSE].
