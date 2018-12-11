@@ -13,8 +13,6 @@ before_install:
   install $TRAVIS_NODE_VERSION
 - node --version
 - npm --version
-- npm cache clean
-- npm install -g npm@3
 install:
 - npm install
 script:
