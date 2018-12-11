@@ -2,13 +2,17 @@
 # http://www.appveyor.com/docs/appveyor-yml
 environment:
   matrix:
+  - nodejs_version: "0.10"
+  - nodejs_version: "0.12"
   - nodejs_version: "4"
   - nodejs_version: "6"
+  - nodejs_version: "8"
+  - nodejs_version: "10"
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm cache clean
-  - npm install -g npm@3
+  - node --version
+  - npm --version
   - npm install
 
 build: off
@@ -16,4 +20,4 @@ build: off
 test_script:
   - node --version
   - npm --version
-  - npm test
+  - npm run jasmine
