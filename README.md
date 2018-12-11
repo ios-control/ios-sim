@@ -1,10 +1,11 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/0kw833771uu622fs?svg=true)](https://ci.appveyor.com/project/shazron/ios-sim)
-[![Build Status](https://travis-ci.org/phonegap/ios-sim.svg?branch=master)](https://travis-ci.org/phonegap/ios-sim)
+[![Build status](https://ci.appveyor.com/api/projects/status/xh7auct40k5oxwjg/branch/master?svg=true
+)](https://ci.appveyor.com/project/shazron/ios-sim-bn5fo)
+[![Build Status](https://travis-ci.org/ios-control/ios-sim.svg?branch=master)](https://travis-ci.org/ios-control/ios-sim)
 
 ios-sim
 =======
 
-Supports Xcode 8 and greater only since version 5.x.
+Supports Node 6 and greater, and Xcode 10 and greater -- since version 8.x.
 
 The ios-sim tool is a command-line utility that launches an iOS application on the iOS Simulator. This allows for niceties such as automated testing without having to open Xcode.
 
