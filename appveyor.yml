@@ -2,13 +2,11 @@
 # http://www.appveyor.com/docs/appveyor-yml
 environment:
   matrix:
-  - nodejs_version: "4"
   - nodejs_version: "6"
+  - nodejs_version: "8"
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm cache clean
-  - npm install -g npm@3
   - npm install
 
 build: off

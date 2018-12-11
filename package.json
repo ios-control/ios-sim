@@ -9,7 +9,7 @@
     "url": "https://github.com/ios-control/ios-sim"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "keywords": [
     "ios-sim",
