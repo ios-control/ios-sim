@@ -71,7 +71,7 @@ function findFirstAvailableDevice(list) {
     return ret_obj;
 }
 
-function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly) {
+function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly, options = {}) {
     /*
         // Example result:
         {
@@ -91,6 +91,9 @@ function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly) 
         list.devices[deviceGroup].forEach(function(device) {
             var devicePropertyValue = device[deviceProperty];
 
+            if (options.lowerCase) {
+                devicePropertyValue = devicePropertyValue.toLowerCase();
+            }
             if (!runtimes[devicePropertyValue]) {
                 runtimes[devicePropertyValue] = [];
             }
@@ -108,8 +111,9 @@ function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly) 
 }
 
 function findAvailableRuntime(list, device_name) {
+    device_name = device_name.toLowerCase();
 
-    var all_druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true);
+    var all_druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true, { lowerCase: true });
     var druntime = all_druntimes[ filterDeviceName(device_name) ] || all_druntimes[ device_name ];
     var runtime_found = druntime && druntime.length > 0;
 
@@ -199,7 +203,7 @@ function getDeviceFromDeviceTypeId(devicetypeid) {
         // found the runtime, now find the actual device matching devicename
         if (deviceGroup === ret_obj.runtime) {
             return list.devices[deviceGroup].some(function(device) {
-                if (filterDeviceName(device.name) === filterDeviceName(ret_obj.name)) {
+                if (filterDeviceName(device.name).toLowerCase() === filterDeviceName(ret_obj.name).toLowerCase()) {
                     ret_obj.id = device.udid;
                     return true;
                 }
@@ -260,12 +264,16 @@ function withInjectedEnvironmentVariablesToProcess(process, envVariables, action
 // replace hyphens in iPad Pro name which differ in 'Device Types' and 'Devices'
 function filterDeviceName(deviceName) {
     // replace hyphens in iPad Pro name which differ in 'Device Types' and 'Devices'
-    if (deviceName.indexOf('iPad Pro') === 0) {
+    if (/^iPad Pro/i.test(deviceName)) {
         return deviceName.replace(/\-/g, ' ').trim();
     } else if (deviceName.indexOf('iPhone Xs') === 0) {
       return deviceName.replace('Xs', 'XS');
     } else if (deviceName.indexOf('iPhone Xʀ') === 0) {
       return deviceName.replace('Xʀ', 'XR');
+    }
+    // replace ʀ in iPhone Xʀ
+    if (deviceName.indexOf('ʀ') > -1) {
+        return deviceName.replace('ʀ', 'R');
     }
     return deviceName;
 }
@@ -349,11 +357,11 @@ var lib = {
         var list = simctl.list(options).json;
         list = fixSimCtlList(list);
 
-        var druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true);
+        var druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true, { lowerCase: true });
         var name_id_map = {};
 
         list.devicetypes.forEach(function(device) {
-            name_id_map[ filterDeviceName(device.name) ] = device.identifier;
+            name_id_map[ filterDeviceName(device.name).toLowerCase() ] = device.identifier;
         });
 
         list = [];
@@ -370,7 +378,7 @@ var lib = {
 
         for (var deviceName in druntimes) {
             var runtimes = druntimes[ deviceName ];
-            var dname = filterDeviceName(deviceName);
+            var dname = filterDeviceName(deviceName).toLowerCase();
 
             if (!(dname in name_id_map)) {
                 continue;
