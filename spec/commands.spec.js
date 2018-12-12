@@ -16,15 +16,46 @@
     specific language governing permissions and limitations
     under the License.
 */
+var commands = require('../src/commands');
+var os = require('os');
 
 describe('commands end-to-end', function() {
 
     beforeEach(function() {
+      if (os.platform() === 'darwin') {
+        commands.init();
+      }
     });
 
     afterEach(function() {
     });
 
-    // it('', function(done) {
-    // });
+    it('command - showsdks', function() {
+      if (os.platform() === 'darwin') {
+        commands.showsdks({ 'no-output': true });
+      }
+    });
+
+    it('command - showdevicetypes', function() {
+      if (os.platform() === 'darwin') {
+        commands.showdevicetypes({ 'no-output': true });
+      }
+    });
+
+    it('command - launch', function() {
+      //TODO: - fail();
+      //TODO: add a fixture Simulator .app to launch
+    });
+
+    it('command - install', function() {
+      //TODO: - fail();
+      //TODO: add a fixture Simulator .app to install
+    });
+
+    it('command - start', function() {
+      var devicetypeid = 'iPhone-6';
+      if (os.platform() === 'darwin') {
+        commands.start({ 'devicetypeid': devicetypeid });
+      }
+    });
 });

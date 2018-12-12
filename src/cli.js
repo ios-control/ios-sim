@@ -37,7 +37,10 @@ var nopt;
 function init() {
     try {
         nopt = require('nopt');
-        command_lib.init();
+        var code = command_lib.init();
+        if (code !== 0) {
+            process.exit(code);
+        }
     } catch (e) {
         console.error(
             'Please run npm install from this directory:\n\t' +

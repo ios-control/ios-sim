@@ -71,7 +71,7 @@ function findFirstAvailableDevice(list) {
     return ret_obj;
 }
 
-function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly) {
+function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly, options = {}) {
     /*
         // Example result:
         {
@@ -91,6 +91,9 @@ function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly) 
         list.devices[deviceGroup].forEach(function(device) {
             var devicePropertyValue = device[deviceProperty];
 
+            if (options.lowerCase) {
+                devicePropertyValue = devicePropertyValue.toLowerCase();
+            }
             if (!runtimes[devicePropertyValue]) {
                 runtimes[devicePropertyValue] = [];
             }
@@ -108,9 +111,10 @@ function findRuntimesGroupByDeviceProperty(list, deviceProperty, availableOnly) 
 }
 
 function findAvailableRuntime(list, device_name) {
+    device_name = device_name.toLowerCase();
 
-    var all_druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true);
-    var druntime = all_druntimes[ filterDeviceName(device_name) ];
+    var all_druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true, { lowerCase: true });
+    var druntime = all_druntimes[ filterDeviceName(device_name) ] || all_druntimes[ device_name ];
     var runtime_found = druntime && druntime.length > 0;
 
     if (!runtime_found) {
@@ -141,6 +145,7 @@ function getDeviceFromDeviceTypeId(devicetypeid) {
 
     var options = { 'silent': true };
     var list = simctl.list(options).json;
+    list = fixSimCtlList(list);
 
     var arr = [];
     if (devicetypeid) {
@@ -198,7 +203,7 @@ function getDeviceFromDeviceTypeId(devicetypeid) {
         // found the runtime, now find the actual device matching devicename
         if (deviceGroup === ret_obj.runtime) {
             return list.devices[deviceGroup].some(function(device) {
-                if (filterDeviceName(device.name) === filterDeviceName(ret_obj.name)) {
+                if (filterDeviceName(device.name).toLowerCase() === filterDeviceName(ret_obj.name).toLowerCase()) {
                     ret_obj.id = device.udid;
                     return true;
                 }
@@ -259,10 +264,52 @@ function withInjectedEnvironmentVariablesToProcess(process, envVariables, action
 // replace hyphens in iPad Pro name which differ in 'Device Types' and 'Devices'
 function filterDeviceName(deviceName) {
     // replace hyphens in iPad Pro name which differ in 'Device Types' and 'Devices'
-    if (deviceName.indexOf('iPad Pro') === 0) {
+    if (/^iPad Pro/i.test(deviceName)) {
         return deviceName.replace(/\-/g, ' ').trim();
     }
+    // replace ʀ in iPhone Xʀ
+    if (deviceName.indexOf('ʀ') > -1) {
+        return deviceName.replace('ʀ', 'R');
+    }
     return deviceName;
+}
+
+function fixNameKey(array, mapping) {
+    if (!array || !mapping) {
+        return array;
+    }
+
+    return array.map(function(elem) {
+        var name = mapping[elem.name];
+        if (name) {
+            elem.name = name;
+        }
+        return elem;
+    });
+}
+
+function fixSimCtlList(list) {
+    // Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
+    var deviceTypeNameMap = {
+        'iPhone2017-A': 'iPhone 8',
+        'iPhone2017-B': 'iPhone 8 Plus',
+        'iPhone2017-C': 'iPhone X',
+        'Watch2017 - 38mm': 'Apple Watch Series 3 - 38mm',
+        'Watch2017 - 42mm': 'Apple Watch Series 3 - 42mm'
+    };
+    list.devicetypes = fixNameKey(list.devicetypes, deviceTypeNameMap);
+
+    // `iPad Pro` in iOS 9.3 has mapped to `iPad Pro (9.7 inch)`
+    // `Apple TV 1080p` has mapped to `Apple TV`
+    var deviceNameMap = {
+        'Apple TV 1080p': 'Apple TV',
+        'iPad Pro': 'iPad Pro (9.7-inch)'
+    };
+    Object.keys(list.devices).forEach(function(key) {
+        list.devices[key] = fixNameKey(list.devices[key], deviceNameMap);
+    });
+
+    return list;
 }
 
 var lib = {
@@ -274,12 +321,13 @@ var lib = {
         var output = simctl.check_prerequisites();
         if (output.code !== 0) {
             console.error(output.output);
-            process.exit(2);
         }
 
         if (!bplist) {
             bplist = require('bplist-parser');
         }
+
+        return output.code;
     },
 
     //jscs:disable disallowUnusedParams
@@ -287,13 +335,15 @@ var lib = {
         var options = { silent: true, runtimes: true };
         var list = simctl.list(options).json;
 
-        console.log('Simulator SDK Roots:');
+        var output = 'Simulator SDK Roots:\n';
         list.runtimes.forEach(function(runtime) {
             if (runtime.availability === '(available)') {
-                console.log(util.format('"%s" (%s)', runtime.name, runtime.buildversion));
-                console.log(util.format('\t(unknown)'));
+                output += util.format('"%s" (%s)\n', runtime.name, runtime.buildversion);
+                output += util.format('\t(unknown)\n');
             }
         });
+
+        return output;
     },
     //jscs:enable disallowUnusedParams
 
@@ -301,12 +351,13 @@ var lib = {
     getdevicetypes: function(args) {
         var options = { silent: true };
         var list = simctl.list(options).json;
+        list = fixSimCtlList(list);
 
-        var druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true);
+        var druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true, { lowerCase: true });
         var name_id_map = {};
 
         list.devicetypes.forEach(function(device) {
-            name_id_map[ filterDeviceName(device.name) ] = device.identifier;
+            name_id_map[ filterDeviceName(device.name).toLowerCase() ] = device.identifier;
         });
 
         list = [];
@@ -323,7 +374,7 @@ var lib = {
 
         for (var deviceName in druntimes) {
             var runtimes = druntimes[ deviceName ];
-            var dname = filterDeviceName(deviceName);
+            var dname = filterDeviceName(deviceName).toLowerCase();
 
             if (!(dname in name_id_map)) {
                 continue;
@@ -337,9 +388,12 @@ var lib = {
 
     //jscs:disable disallowUnusedParams
     showdevicetypes: function(args) {
+        var output = '';
         this.getdevicetypes().forEach(function(device) {
-            console.log(device);
+            output += util.format('%s\n', device);
         });
+
+        return output;
     },
     //jscs:enable disallowUnusedParams
 
@@ -434,13 +488,7 @@ var lib = {
     },
 
     start: function(devicetypeid) {
-        var device = {};
-        try {
-            device = getDeviceFromDeviceTypeId(devicetypeid);
-        } catch (e) {
-            console.error(e);
-        }
-
+        var device = getDeviceFromDeviceTypeId(devicetypeid);
         simctl.extensions.start(device.id);
     },
 

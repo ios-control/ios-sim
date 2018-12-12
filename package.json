@@ -1,15 +1,15 @@
 {
   "name": "ios-sim",
-  "version": "5.1.0",
+  "version": "8.0.0-dev",
   "preferGlobal": "true",
-  "description": "launch iOS apps into the iOS Simulator from the command line (Xcode 7.0+)",
+  "description": "launch iOS apps into the iOS Simulator from the command line (Xcode 8.0+)",
   "main": "ios-sim.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/phonegap/ios-sim"
+    "url": "https://github.com/ios-control/ios-sim"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=6"
   },
   "keywords": [
     "ios-sim",
@@ -24,22 +24,25 @@
   "author": "Shazron Abdullah",
   "license": "MIT",
   "dependencies": {
-    "plist": "^1.2.0",
-    "simctl": "^1.0.0",
+    "bplist-parser": "^0.0.6",
     "nopt": "1.0.9",
-    "bplist-parser": "^0.0.6"
+    "plist": "^3.0.1",
+    "simctl": "^1.1.1"
   },
   "devDependencies": {
-    "jasmine-node": "^1.14.5",
-    "jscs": "^2.11.0",
-    "jshint": "^2.9.1"
+    "eslint": "^4.19.1",
+    "eslint-config-semistandard": "^12.0.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "jasmine": "~2.6.0"
   },
   "scripts": {
+    "eslint": "eslint *.js src spec",
     "test": "npm run jasmine",
-    "posttest": "npm run jshint",
-    "jshint": "jshint src ./ios-sim.js",
-    "postjshint": "npm run jscs",
-    "jscs": "jscs src ./ios-sim.js",
-    "jasmine": "jasmine-node --captureExceptions --color spec"
+    "posttest": "npm run eslint",
+    "jasmine": "jasmine --config=spec/jasmine.json"
   }
 }

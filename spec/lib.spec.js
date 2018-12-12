@@ -51,6 +51,8 @@ describe('lib end-to-end', function() {
         });
     })
 
-    // it('', function(done) {
-    // });
+    it('init should not process.exit when called as a lib', function() {
+        var code = lib.init();
+        expect(!isNaN(code)).toBe(true);
+    });
 });
