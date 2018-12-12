@@ -95,4 +95,4 @@ Ensure that multiple instances of `launchd_sim` are not running:
 License
 -------
 
-This project is available under the MIT license. See [`LICENSE`][./LICENSE].
+This project is available under the MIT license. See [`LICENSE`](./LICENSE).
