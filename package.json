@@ -22,17 +22,38 @@
     "url": "https://github.com/phonegap/ios-sim/issues"
   },
   "author": "Shazron Abdullah",
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "files": [
+    "/oclif.manifest.json",
+    "/src"
+  ],
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "./bin/run",
+    "devPlugins": [
+      "@oclif/plugin-help"
+    ]
+  },
   "dependencies": {
+    "@oclif/command": "^1.5.6",
+    "@oclif/config": "^1.9.0",
+    "@oclif/errors": "^1.1.2",
+    "@oclif/plugin-help": "^1",
     "bplist-parser": "^0.0.6",
     "nopt": "1.0.9",
     "plist": "^3.0.1",
     "simctl": "^2"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "@oclif/dev-cli": "^1",
+    "@oclif/test": "^1",
+    "babel-jest": "^24.1.0",
     "acorn": "^6.1.1",
     "babel-runtime": "^6.26.0",
     "eslint": "^5.15.1",
+    "eslint-config-oclif": "^1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jest": "^22.3.0",
@@ -45,9 +66,12 @@
     "stdout-stderr": "^0.1.9"
   },
   "scripts": {
-    "eslint": "eslint *.js src test",
-    "test": "jest --ci",
-    "posttest": "npm run eslint"
+    "posttest": "eslint src test",
+    "test": "npm run unit-tests",
+    "unit-tests": "jest --ci",
+    "prepack": "oclif-dev manifest && oclif-dev readme",
+    "postpack": "rm -f oclif.manifest.json",
+    "version": "oclif-dev readme && git add README.md"
   },
   "jest": {
     "collectCoverage": true,
