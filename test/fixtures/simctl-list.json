@@ -198,6 +198,16 @@
   ],
   "runtimes" : [
     {
+      "bundlePath" : "\/Library\/Developer\/CoreSimulator\/Profiles\/Runtimes\/iOS 9.0.simruntime",
+      "availabilityError" : "",
+      "buildversion" : "13E230",
+      "availability" : "(not available)",
+      "isAvailable" : false,
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-9-0",
+      "version" : "9.0",
+      "name" : "iOS 9.0"
+    },
+    {
       "bundlePath" : "\/Library\/Developer\/CoreSimulator\/Profiles\/Runtimes\/iOS 9.3.simruntime",
       "availabilityError" : "",
       "buildversion" : "13E233",

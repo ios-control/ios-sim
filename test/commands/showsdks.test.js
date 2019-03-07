@@ -11,33 +11,17 @@ beforeEach(() => {
 })
 
 test('showsdks', function () {
-  // simctl.list(options).json
-
   if (os.platform() === 'darwin') {
-    const runtimes = [
-      {
-        name: 'Runtime1',
-        availability: '(available)',
-        buildversion: 1
-      },
-      {
-        name: 'Runtime2',
-        availability: '(unavailable)',
-        buildversion: 2
-      }
-    ]
-
+    const json = fixtureJson('simctl-list.json')
     simctl.list = jest.fn(() => {
       return {
-        json: {
-          runtimes
-        }
+        json
       }
     })
 
     return command.run().then((result) => {
-      expect(result).toMatchObject(runtimes)
-      expect(stdout.output).toMatch(`Simulator SDK Roots:\n"Runtime1" (1)\n\t(unknown)\n\n`)
+      expect(result).toMatchObject(json.runtimes)
+      expect(stdout.output).toMatch(fixtureFile('showsdks.txt'))
     })
   }
 })

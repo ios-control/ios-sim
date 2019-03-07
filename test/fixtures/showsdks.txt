@@ -1,0 +1,14 @@
+Simulator SDK Roots:
+"iOS 9.3" (13E233)
+	(unknown)
+"iOS 10.3" (14E8301)
+	(unknown)
+"iOS 11.4" (15F79)
+	(unknown)
+"iOS 12.1" (16B91)
+	(unknown)
+"tvOS 12.1" (16J602)
+	(unknown)
+"watchOS 5.1" (16R591)
+	(unknown)
+
