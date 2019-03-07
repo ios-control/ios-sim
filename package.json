@@ -3,7 +3,7 @@
   "version": "8.0.1-dev",
   "preferGlobal": "true",
   "description": "launch iOS apps into the iOS Simulator from the command line (Xcode 8.0+)",
-  "main": "ios-sim.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ios-control/ios-sim"
@@ -16,7 +16,7 @@
     "iOS Simulator"
   ],
   "bin": {
-    "ios-sim": "./bin/ios-sim"
+    "ios-sim": "./bin/run"
   },
   "bugs": {
     "url": "https://github.com/phonegap/ios-sim/issues"
@@ -29,7 +29,7 @@
   ],
   "oclif": {
     "commands": "./src/commands",
-    "bin": "./bin/run",
+    "bin": "ios-sim",
     "devPlugins": [
       "@oclif/plugin-help"
     ]
@@ -49,8 +49,8 @@
     "@babel/preset-env": "^7.3.1",
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
-    "babel-jest": "^24.1.0",
     "acorn": "^6.1.1",
+    "babel-jest": "^24.1.0",
     "babel-runtime": "^6.26.0",
     "eslint": "^5.15.1",
     "eslint-config-oclif": "^1",
