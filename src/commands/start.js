@@ -1,8 +1,13 @@
 const BaseCommand = require('../BaseCommand')
+const { getDeviceFromDeviceTypeId } = require('../helpers')
+const simctl = require('simctl')
 
 class StartCommand extends BaseCommand {
   async run () {
-    console.log('test')
+    const { flags } = this.parse(StartCommand)
+
+    let device = getDeviceFromDeviceTypeId(flags.devicetypeid)
+    simctl.extensions.start(device.id)
   }
 }
 
