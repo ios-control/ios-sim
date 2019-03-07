@@ -72,6 +72,10 @@ LaunchCommand.description = 'Launch the application at the specified path on the
 
 LaunchCommand.flags = {
   ...BaseCommand.flags,
+  devicetypeid: flags.string({
+    char: 'd',
+    description: 'The id of the device type that should be simulated (Xcode6+). Use \'showdevicetypes\' to list devices.'
+  }),
   setenv: flags.string({
     multiple: true
   }),

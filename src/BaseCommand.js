@@ -41,10 +41,6 @@ BaseCommand.flags = {
   log: flags.string({
     char: 'l',
     description: 'The path where log of the app running in the Simulator will be redirected to'
-  }),
-  devicetypeid: flags.string({
-    char: 'd',
-    description: 'The id of the device type that should be simulated (Xcode6+). Use \'showdevicetypes\' to list devices.'
   })
 }
 
