@@ -1,5 +1,4 @@
 const TheCommand = require('../../src/commands/showsdks')
-const os = require('os')
 const { stdout } = require('stdout-stderr')
 
 jest.mock('simctl')
@@ -11,17 +10,15 @@ beforeEach(() => {
 })
 
 test('showsdks', function () {
-  if (os.platform() === 'darwin') {
-    const json = fixtureJson('simctl-list.json')
-    simctl.list = jest.fn(() => {
-      return {
-        json
-      }
-    })
+  const json = fixtureJson('simctl-list.json')
+  simctl.list = jest.fn(() => {
+    return {
+      json
+    }
+  })
 
-    return command.run().then((result) => {
-      expect(result).toMatchObject(json.runtimes)
-      expect(stdout.output).toMatch(fixtureFile('showsdks.txt'))
-    })
-  }
+  return command.run().then((result) => {
+    expect(result).toMatchObject(json.runtimes)
+    expect(stdout.output).toMatch(fixtureFile('showsdks.txt'))
+  })
 })
