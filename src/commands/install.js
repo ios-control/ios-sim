@@ -15,7 +15,7 @@ class InstallCommand extends BaseCommand {
 
     info_plist_path = path.join(args.applicationPath, 'Info.plist')
     if (!fs.existsSync(info_plist_path)) {
-      this.error(info_plist_path + ' file not found.')
+      this.handleError(`${info_plist_path} file not found.`)
     }
 
     bplist.parseFile(info_plist_path, function (err, obj) {
