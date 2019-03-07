@@ -1,5 +1,4 @@
 const simctl = require('simctl')
-const util = require('util')
 
 function fixSimCtlList (list) {
   // Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
@@ -40,7 +39,9 @@ function getDeviceTypes (args) {
   list = []
   let remove = function (devicename, runtime) {
     // remove "iOS" prefix in runtime, remove prefix "com.apple.CoreSimulator.SimDeviceType." in id
-    list.push(util.format('%s, %s', name_id_map[ devicename ].replace(/^com.apple.CoreSimulator.SimDeviceType./, ''), runtime.replace(/^iOS /, '')))
+    const deviceName = name_id_map[ devicename ].replace(/^com.apple.CoreSimulator.SimDeviceType./, '')
+    const runtimeName = runtime.replace(/^iOS /, '')
+    list.push(`${deviceName}, ${runtimeName}`)
   }
 
   let cur = function (devicename) {
@@ -197,7 +198,7 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
   let devicetype = null
   if (arr.length < 1) {
     let dv = findFirstAvailableDevice(list)
-    console.error(util.format('--devicetypeid was not specified, using first available device: %s.', dv.name))
+    console.error(`--devicetypeid was not specified, using first available device: ${dv.name}`)
     return dv
   } else {
     devicetype = arr[0].trim()
@@ -224,8 +225,7 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
 
   // device name not found, exit
   if (!devicename_found) {
-    console.error(util.format('Device type "%s" could not be found.', devicetype))
-    process.exit(1)
+    throw new Error(`Device type "${devicetype}" could not be found.`)
   }
 
   // if runtime_version was not specified, we use a default. Use first available that has the device
@@ -235,7 +235,7 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
 
   // prepend iOS to runtime version, if necessary
   if (ret_obj.runtime.indexOf('OS') === -1) {
-    ret_obj.runtime = util.format('iOS %s', ret_obj.runtime)
+    ret_obj.runtime = `iOS ${ret_obj.runtime}`
   }
 
   // now find the deviceid (by runtime and devicename)
@@ -254,10 +254,9 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
   })
 
   if (!deviceid_found) {
-    console.error(
-      util.format('Device id for device name "%s" and runtime "%s" could not be found, or is not available.', ret_obj.name, ret_obj.runtime)
+    throw new Error(
+      `Device id for device name "${ret_obj.name}" and runtime "${ret_obj.runtime}" could not be found, or is not available.`
     )
-    process.exit(1)
   }
 
   return ret_obj
@@ -271,8 +270,7 @@ function findAvailableRuntime (list, device_name) {
   let runtime_found = druntime && druntime.length > 0
 
   if (!runtime_found) {
-    console.error(util.format('No available runtimes could be found for "%s".', device_name))
-    process.exit(1)
+    throw new Error(`No available runtimes could be found for "${device_name}".`)
   }
 
   // return most modern runtime
