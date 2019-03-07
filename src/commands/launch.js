@@ -17,8 +17,7 @@ class LaunchCommand extends BaseCommand {
 
     info_plist_path = path.join(args.applicationPath, 'Info.plist')
     if (!fs.existsSync(info_plist_path)) {
-      console.error(info_plist_path + ' file not found.')
-      process.exit(1)
+      this.error(info_plist_path + ' file not found.')
     }
 
     bplist.parseFile(info_plist_path, function (err, obj) {
