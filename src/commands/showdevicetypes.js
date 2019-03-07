@@ -1,8 +1,15 @@
 const BaseCommand = require('../BaseCommand')
+const { getDeviceTypes } = require('../helpers')
 
 class ShowDeviceTypesCommand extends BaseCommand {
   async run () {
-    console.log('test')
+    const output = []
+    getDeviceTypes().forEach(function (device) {
+      output.push(device)
+    })
+
+    this.log(output.join('\n'))
+    return output
   }
 }
 
