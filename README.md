@@ -5,94 +5,146 @@
 
 ios-sim
 =======
+ios-sim
+======================
 
-Supports Node 6 and greater, and Xcode 9.4 and greater -- since version 8.x.
 
-The `ios-sim` tool is a command-line utility that launches an iOS application on the iOS Simulator. This allows for niceties such as automated testing without having to open Xcode.
+<!-- toc -->
+* [Usage](#usage)
+* [Commands](#commands)
+<!-- tocstop -->
+# Usage
+<!-- usage -->
+```sh-session
+$ npm install -g ios-sim
+$ ios-sim COMMAND
+running command...
+$ ios-sim (-v|--version|version)
+ios-sim/9.0.0-dev darwin-x64 node-v8.15.0
+$ ios-sim --help [COMMAND]
+USAGE
+  $ ios-sim COMMAND
+...
+```
+<!-- usagestop -->
+# Commands
+<!-- commands -->
+* [`ios-sim install APPLICATIONPATH`](#ios-sim-install-applicationpath)
+* [`ios-sim launch APPLICATIONPATH`](#ios-sim-launch-applicationpath)
+* [`ios-sim showdevicetypes`](#ios-sim-showdevicetypes)
+* [`ios-sim showsdks`](#ios-sim-showsdks)
+* [`ios-sim start`](#ios-sim-start)
 
-Features
---------
+## `ios-sim install APPLICATIONPATH`
 
-* Choose the device family to simulate, i.e. iPhone or iPad. Run using `showdevicetypes` option to see available device types, and pass it in as the `devicetypeid` parameter.
-
-See the `--help` option for more info.
-
-Usage
------
+Install the application at the specified path to the iOS Simulator without launching the app
 
 ```
+USAGE
+  $ ios-sim install APPLICATIONPATH
 
-    Usage: ios-sim <command> <options> [--args ...]
-        
-    Commands:
-      showsdks                        List the available iOS SDK versions
-      showdevicetypes                 List the available device types
-      launch <application path>       Launch the application at the specified path on the iOS Simulator
-      start                           Launch iOS Simulator without an app
-      install <application path>      Install the application at the specified path on the iOS Simulator without launching the app
+ARGUMENTS
+  APPLICATIONPATH  the path to the application to launch
 
-    Options:
-      --version                       Print the version of ios-sim
-      --help                          Show this help text
-      --exit                          Exit after startup
-      --log <log file path>           The path where log of the app running in the Simulator will be redirected to
-      --devicetypeid <device type>    The id of the device type that should be simulated (Xcode6+). Use 'showdevicetypes' to list devices.
-                                      e.g "com.apple.CoreSimulator.SimDeviceType.Resizable-iPhone6, 8.0"
-                                  
-    Removed in version 4.x:
-      --stdout <stdout file path>     The path where stdout of the simulator will be redirected to (defaults to stdout of ios-sim)
-      --stderr <stderr file path>     The path where stderr of the simulator will be redirected to (defaults to stderr of ios-sim)
-      --sdk <sdkversion>              The iOS SDK version to run the application on (defaults to the latest)
-      --family <device family>        The device type that should be simulated (defaults to `iphone')
-      --retina                        Start a retina device
-      --tall                          In combination with --retina flag, start the tall version of the retina device (e.g. iPhone 5 (4-inch))
-      --64bit                         In combination with --retina flag and the --tall flag, start the 64bit version of the tall retina device (e.g. iPhone 5S (4-inch 64bit))
-                                    
-    Unimplemented in this version:
-      --verbose                       Set the output level to verbose
-      --timeout <seconds>             The timeout time to wait for a response from the Simulator. Default value: 30 seconds
-      --args <...>                    All following arguments will be passed on to the application
-      --env <environment file path>   A plist file containing environment key-value pairs that should be set
-      --setenv NAME=VALUE             Set an environment variable
-                                  
+OPTIONS
+  -d, --devicetypeid=devicetypeid  The id of the device type that should be simulated (Xcode6+). Use 'showdevicetypes'
+                                   to list devices.
+
+  -l, --log=log                    The path where log of the app running in the Simulator will be redirected to
+
+  -v, --verbose                    Enable verbose output
+
+  -x, --exit                       Exit after startup
+
+  --debug=debug                    Debug level output
 ```
 
-Installation
-------------
+_See code: [src/commands/install.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev/src/commands/install.js)_
 
-Choose one of the following installation methods.
+## `ios-sim launch APPLICATIONPATH`
 
-### Node JS
+Launch the application at the specified path in the iOS Simulator
 
-Install using Node.js (6 or greater):
+```
+USAGE
+  $ ios-sim launch APPLICATIONPATH
 
-    $ npm install ios-sim -g
+ARGUMENTS
+  APPLICATIONPATH  the path to the application to launch
 
-### Zip
+OPTIONS
+  -a, --args=args                  arguments to pass in to the launched app
 
-Download a zip file:
+  -d, --devicetypeid=devicetypeid  The id of the device type that should be simulated (Xcode6+). Use 'showdevicetypes'
+                                   to list devices.
 
-    $ curl -L https://github.com/phonegap/ios-sim/archive/master.zip -o ios-sim.zip
-    $ unzip ios-sim.zip
+  -l, --log=log                    The path where log of the app running in the Simulator will be redirected to
 
-### Git
+  -s, --setenv=setenv              environment variables to pass in as key value pairs
 
-Download using git clone:
+  -v, --verbose                    Enable verbose output
 
-    $ git clone git://github.com/phonegap/ios-sim.git
+  -x, --exit                       Exit after startup
 
-Troubleshooting
----------------
+  --debug=debug                    Debug level output
+```
 
-Be sure to enable Developer Mode on your machine:
+_See code: [src/commands/launch.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev/src/commands/launch.js)_
 
-    $ DevToolsSecurity -enable
+## `ios-sim showdevicetypes`
 
-Ensure that multiple instances of `launchd_sim` are not running:
+List the available device types
 
-    $ killall launchd_sim
+```
+USAGE
+  $ ios-sim showdevicetypes
 
-License
--------
+OPTIONS
+  -l, --log=log  The path where log of the app running in the Simulator will be redirected to
+  -v, --verbose  Enable verbose output
+  -x, --exit     Exit after startup
+  --debug=debug  Debug level output
+```
 
-This project is available under the MIT license. See [`LICENSE`](./LICENSE).
+_See code: [src/commands/showdevicetypes.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev/src/commands/showdevicetypes.js)_
+
+## `ios-sim showsdks`
+
+List the available iOS SDK versions
+
+```
+USAGE
+  $ ios-sim showsdks
+
+OPTIONS
+  -l, --log=log  The path where log of the app running in the Simulator will be redirected to
+  -v, --verbose  Enable verbose output
+  -x, --exit     Exit after startup
+  --debug=debug  Debug level output
+```
+
+_See code: [src/commands/showsdks.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev/src/commands/showsdks.js)_
+
+## `ios-sim start`
+
+Launch the iOS Simulator without an app
+
+```
+USAGE
+  $ ios-sim start
+
+OPTIONS
+  -d, --devicetypeid=devicetypeid  The id of the device type that should be simulated (Xcode6+). Use 'showdevicetypes'
+                                   to list devices.
+
+  -l, --log=log                    The path where log of the app running in the Simulator will be redirected to
+
+  -v, --verbose                    Enable verbose output
+
+  -x, --exit                       Exit after startup
+
+  --debug=debug                    Debug level output
+```
+
+_See code: [src/commands/start.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev/src/commands/start.js)_
+<!-- commandsstop -->

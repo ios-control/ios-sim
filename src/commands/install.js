@@ -50,7 +50,7 @@ InstallCommand.args = [
   }
 ]
 
-InstallCommand.description = 'Install the application at the specified path on the iOS Simulator without launching the app'
+InstallCommand.description = 'Install the application at the specified path to the iOS Simulator without launching the app'
 
 InstallCommand.flags = {
   ...BaseCommand.flags,

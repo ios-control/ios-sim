@@ -12,7 +12,7 @@ class StartCommand extends BaseCommand {
   }
 }
 
-StartCommand.description = 'Launch iOS Simulator without an app'
+StartCommand.description = 'Launch the iOS Simulator without an app'
 
 StartCommand.flags = {
   ...BaseCommand.flags,

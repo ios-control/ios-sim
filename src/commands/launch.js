@@ -67,7 +67,7 @@ LaunchCommand.args = [
   }
 ]
 
-LaunchCommand.description = 'Launch the application at the specified path on the iOS Simulator'
+LaunchCommand.description = 'Launch the application at the specified path in the iOS Simulator'
 
 LaunchCommand.flags = {
   ...BaseCommand.flags,
@@ -76,10 +76,14 @@ LaunchCommand.flags = {
     description: 'The id of the device type that should be simulated (Xcode6+). Use \'showdevicetypes\' to list devices.'
   }),
   setenv: flags.string({
-    multiple: true
+    multiple: true,
+    char: 's',
+    description: 'environment variables to pass in as key value pairs'
   }),
   args: flags.string({
-    multiple: true
+    multiple: true,
+    char: 'a',
+    description: 'arguments to pass in to the launched app'
   })
 }
 

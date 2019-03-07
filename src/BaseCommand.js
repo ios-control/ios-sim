@@ -31,12 +31,11 @@ class BaseCommand extends Command {
 
 BaseCommand.flags = {
   debug: flags.string({
-    char: 'd',
     description: 'Debug level output'
   }),
   verbose: flags.boolean({
     char: 'v',
-    description: 'Print the version of ios-sim'
+    description: 'Enable verbose output'
   }),
   exit: flags.boolean({
     char: 'x',

@@ -7,3 +7,4 @@ xcuserdata
 node_modules
 /coverage
 /junit.xml
+/oclif.manifest.json
