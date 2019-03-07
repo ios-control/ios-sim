@@ -76,7 +76,7 @@
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "src/*.js"
+      "src/**/*.js"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/jest.setup.js"

@@ -10,7 +10,7 @@ afterEach(() => { stdout.stop() })
 
 // helper for fixtures
 global.fixtureFile = (output) => {
-  return fs.readFileSync(`./test/fixture/${output}`).toString()
+  return fs.readFileSync(`./test/fixtures/${output}`).toString()
 }
 
 // helper for fixtures
