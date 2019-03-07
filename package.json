@@ -1,9 +1,9 @@
 {
   "name": "ios-sim",
   "version": "9.0.0-dev",
-  "preferGlobal": "true",
+  "preferGlobal": true,
   "description": "launch iOS apps into the iOS Simulator from the command line (Xcode 8.0+)",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ios-control/ios-sim"
