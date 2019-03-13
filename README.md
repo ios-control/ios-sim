@@ -2,6 +2,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/xh7auct40k5oxwjg/branch/master?svg=true
 )](https://ci.appveyor.com/project/shazron/ios-sim-bn5fo)
 [![Build Status](https://travis-ci.org/ios-control/ios-sim.svg?branch=master)](https://travis-ci.org/ios-control/ios-sim)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/ios-control/ios-sim/master.svg?style=flat-square)](https://codecov.io/gh/ios-control/ios-sim/)
 
 ios-sim
 ==========
