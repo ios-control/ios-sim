@@ -43,6 +43,11 @@ class LaunchCommand extends BaseCommand {
         // --devicetypeid is a string in the form "devicetype, runtime_version" (optional: runtime_version)
         let device = getDeviceFromDeviceTypeId(flags.devicetypeid)
 
+        // log device information
+        this.log(`device.name: ${device.name}`)
+        this.log(`device.runtime: ${device.runtime}`)
+        this.log(`device.id: ${device.id}`)
+        
         // so now we have the deviceid, we can proceed
         simctl.extensions.start(device.id)
         simctl.install(device.id, args.applicationPath)
