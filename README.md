@@ -58,7 +58,7 @@ OPTIONS
   --debug=debug                    Debug level output
 ```
 
-_See code: [src/commands/install.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev.4/src/commands/install.js)_
+_See code: [src/commands/install.js](https://github.com/ios-control/ios-sim/blob/9.0.0-dev.4/src/commands/install.js)_
 
 ## `ios-sim launch APPLICATIONPATH`
 
@@ -88,7 +88,7 @@ OPTIONS
   --debug=debug                    Debug level output
 ```
 
-_See code: [src/commands/launch.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev.4/src/commands/launch.js)_
+_See code: [src/commands/launch.js](https://github.com/ios-control/ios-sim/blob/9.0.0-dev.4/src/commands/launch.js)_
 
 ## `ios-sim showdevicetypes`
 
@@ -105,7 +105,7 @@ OPTIONS
   --debug=debug  Debug level output
 ```
 
-_See code: [src/commands/showdevicetypes.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev.4/src/commands/showdevicetypes.js)_
+_See code: [src/commands/showdevicetypes.js](https://github.com/ios-control/ios-sim/blob/9.0.0-dev.4/src/commands/showdevicetypes.js)_
 
 ## `ios-sim showsdks`
 
@@ -122,7 +122,7 @@ OPTIONS
   --debug=debug  Debug level output
 ```
 
-_See code: [src/commands/showsdks.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev.4/src/commands/showsdks.js)_
+_See code: [src/commands/showsdks.js](https://github.com/ios-control/ios-sim/blob/9.0.0-dev.4/src/commands/showsdks.js)_
 
 ## `ios-sim start`
 
@@ -145,5 +145,5 @@ OPTIONS
   --debug=debug                    Debug level output
 ```
 
-_See code: [src/commands/start.js](https://github.com/ios-control/ios-sim/blob/v9.0.0-dev.4/src/commands/start.js)_
+_See code: [src/commands/start.js](https://github.com/ios-control/ios-sim/blob/9.0.0-dev.4/src/commands/start.js)_
 <!-- commandsstop -->
