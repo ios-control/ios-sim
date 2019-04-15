@@ -458,6 +458,11 @@ let lib = {
         // --devicetypeid is a string in the form "devicetype, runtime_version" (optional: runtime_version)
         let device = getDeviceFromDeviceTypeId(devicetypeid)
 
+        // log device information
+        console.log(util.format('device.name: %s', device.name))
+        console.log(util.format('device.runtime: %s', device.runtime))
+        console.log(util.format('device.id: %s', device.id))
+       
         // so now we have the deviceid, we can proceed
         simctl.extensions.start(device.id)
         simctl.install(device.id, app_path)
