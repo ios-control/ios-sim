@@ -462,7 +462,7 @@ let lib = {
         console.log(util.format('device.name: %s', device.name))
         console.log(util.format('device.runtime: %s', device.runtime))
         console.log(util.format('device.id: %s', device.id))
-       
+
         // so now we have the deviceid, we can proceed
         simctl.extensions.start(device.id)
         simctl.install(device.id, app_path)
