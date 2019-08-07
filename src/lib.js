@@ -87,7 +87,8 @@ function findRuntimesGroupByDeviceProperty (list, deviceProperty, availableOnly,
   let available_runtimes = {}
 
   list.runtimes.forEach(function (runtime) {
-    available_runtimes[ runtime.name ] = (runtime.availability === '(available)')
+    // key value changed to "isAvailble" from "availability"
+    available_runtimes[ runtime.name ] = (runtime.availability ? (runtime.availability === '(available)') : runtime.isAvailable)
   })
 
   Object.keys(list.devices).forEach(function (deviceGroup) {
