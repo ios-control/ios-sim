@@ -3,8 +3,8 @@ const simctl = require('simctl')
 
 class ShowSdksCommand extends BaseCommand {
   async run () {
-    let options = { silent: true, runtimes: true }
-    let list = simctl.list(options).json
+    const options = { silent: true, runtimes: true }
+    const list = simctl.list(options).json
 
     this.log(await this.output(list.runtimes))
     return list.runtimes
@@ -12,8 +12,8 @@ class ShowSdksCommand extends BaseCommand {
 
   async output (runtimes) {
     if (!runtimes) {
-      let options = { silent: true, runtimes: true }
-      let list = simctl.list(options).json
+      const options = { silent: true, runtimes: true }
+      const list = simctl.list(options).json
       runtimes = list.runtimes
     }
 

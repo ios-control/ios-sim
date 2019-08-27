@@ -30,7 +30,7 @@ describe('when parsing env variables', function () {
 
   describe('without simctl fix', function () {
     test('should return valid map for valid env variable', function () {
-      expect(parseEnvironmentVariables(['KEY=VALUE'], false)).toEqual({ 'KEY': 'VALUE' })
+      expect(parseEnvironmentVariables(['KEY=VALUE'], false)).toEqual({ KEY: 'VALUE' })
     })
   })
 
@@ -39,8 +39,8 @@ describe('when parsing env variables', function () {
       expect(parseEnvironmentVariables(['KEY=VALUE', 'KEY2=VALUE2', 'KEY3'], true))
         .toEqual(
           {
-            'SIMCTL_CHILD_KEY': 'VALUE',
-            'SIMCTL_CHILD_KEY2': 'VALUE2'
+            SIMCTL_CHILD_KEY: 'VALUE',
+            SIMCTL_CHILD_KEY2: 'VALUE2'
           }
         )
     })
@@ -104,27 +104,27 @@ describe('getDeviceFromDeviceTypeId', () => {
   })
 
   test('no device', () => {
-    let consoleSpy = jest.spyOn(console, 'error').mockResolvedValue()
+    const consoleSpy = jest.spyOn(console, 'error').mockResolvedValue()
 
     const device = __internal.getDeviceFromDeviceTypeId()
-    expect(device).toMatchObject({ 'id': '0CB7F7A1-A837-4809-8951-B724D6496462', 'name': 'Apple Watch Series 2 - 38mm', 'runtime': 'watchOS 5.1' })
+    expect(device).toMatchObject({ id: '0CB7F7A1-A837-4809-8951-B724D6496462', name: 'Apple Watch Series 2 - 38mm', runtime: 'watchOS 5.1' })
     expect(consoleSpy).toHaveBeenCalledWith('--devicetypeid was not specified, using first available device: Apple Watch Series 2 - 38mm')
     consoleSpy.mockRestore()
   })
 
   test('known device, with runtime', () => {
     const device = __internal.getDeviceFromDeviceTypeId('iPhone-X, 12.1')
-    expect(device).toMatchObject({ 'id': 'BAC3ADB2-66B2-41C0-AF0D-8D4D58E2E88A', 'name': 'iPhone X', 'runtime': 'iOS 12.1' })
+    expect(device).toMatchObject({ id: 'BAC3ADB2-66B2-41C0-AF0D-8D4D58E2E88A', name: 'iPhone X', runtime: 'iOS 12.1' })
   })
 
   test('known device, with runtime (has com.apple.CoreSimulator.SimRuntime prefix) ', () => {
     const device = __internal.getDeviceFromDeviceTypeId('iPhone-8, 11.3')
-    expect(device).toMatchObject({ 'id': '85D9D9AE-2749-4169-A3DB-94FC9C8EC8F4', 'name': 'iPhone 8', 'runtime': 'iOS 11.3' })
+    expect(device).toMatchObject({ id: '85D9D9AE-2749-4169-A3DB-94FC9C8EC8F4', name: 'iPhone 8', runtime: 'iOS 11.3' })
   })
 
   test('known device, no runtime', () => {
     const device = __internal.getDeviceFromDeviceTypeId('com.apple.CoreSimulator.SimDeviceType.iPhone-X')
-    expect(device).toMatchObject({ 'id': 'BAC3ADB2-66B2-41C0-AF0D-8D4D58E2E88A', 'name': 'iPhone X', 'runtime': 'iOS 12.1' })
+    expect(device).toMatchObject({ id: 'BAC3ADB2-66B2-41C0-AF0D-8D4D58E2E88A', name: 'iPhone X', runtime: 'iOS 12.1' })
   })
 
   test('known device, unknown runtime', () => {
@@ -137,10 +137,10 @@ describe('getDeviceFromDeviceTypeId', () => {
 })
 
 test('withInjectedEnvironmentVariablesToProcess', () => {
-  let action = jest.fn().mockImplementation(() => {
+  const action = jest.fn().mockImplementation(() => {
     expect(process.env.myenv1).toEqual('myvalue1')
   })
-  let envVariables = {
+  const envVariables = {
     myenv1: 'myvalue1'
   }
   withInjectedEnvironmentVariablesToProcess(process, envVariables, action)
@@ -159,7 +159,7 @@ test('findRuntimesGroupByDeviceProperty', () => { // coverage
 
 test('getdevicetypes', () => { // coverage
   const druntimes = {
-    'iPhone XX': [ '15.6' ]
+    'iPhone XX': ['15.6']
   }
 
   const deviceTypes = getDeviceTypes(druntimes)

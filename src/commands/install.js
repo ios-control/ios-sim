@@ -11,9 +11,7 @@ class InstallCommand extends BaseCommand {
     // lib.install(app_path, args.devicetypeid, args.log, args.exit)
     const { args, flags } = this.parse(InstallCommand)
 
-    let info_plist_path
-
-    info_plist_path = path.join(args.applicationPath, 'Info.plist')
+    const info_plist_path = path.join(args.applicationPath, 'Info.plist')
     if (!fs.existsSync(info_plist_path)) {
       this.handleError(`${info_plist_path} file not found.`)
     }
@@ -25,7 +23,7 @@ class InstallCommand extends BaseCommand {
 
       // get the deviceid from --devicetypeid
       // --devicetypeid is a string in the form "devicetype, runtime_version" (optional: runtime_version)
-      let device = getDeviceFromDeviceTypeId(flags.devicetypeid)
+      const device = getDeviceFromDeviceTypeId(flags.devicetypeid)
 
       // so now we have the deviceid, we can proceed
       simctl.extensions.start(device.id)

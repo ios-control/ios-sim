@@ -11,11 +11,10 @@ class LaunchCommand extends BaseCommand {
   async run () {
     const { args, flags } = this.parse(LaunchCommand)
 
-    let wait_for_debugger = false
-    let info_plist_path
+    const wait_for_debugger = false
+    const info_plist_path = path.join(args.applicationPath, 'Info.plist')
     let app_identifier
 
-    info_plist_path = path.join(args.applicationPath, 'Info.plist')
     if (!fs.existsSync(info_plist_path)) {
       this.handleError(`${info_plist_path}  file not found.`)
     }
@@ -33,15 +32,15 @@ class LaunchCommand extends BaseCommand {
         app_identifier = obj[0].CFBundleIdentifier
       }
 
-      let flagArgs = flags.args || []
-      let setenv = flags.setenv || []
+      const flagArgs = flags.args || []
+      const setenv = flags.setenv || []
 
-      let environmentVariables = parseEnvironmentVariables(setenv)
+      const environmentVariables = parseEnvironmentVariables(setenv)
 
       withInjectedEnvironmentVariablesToProcess(process, environmentVariables, function () {
         // get the deviceid from --devicetypeid
         // --devicetypeid is a string in the form "devicetype, runtime_version" (optional: runtime_version)
-        let device = getDeviceFromDeviceTypeId(flags.devicetypeid)
+        const device = getDeviceFromDeviceTypeId(flags.devicetypeid)
 
         // so now we have the deviceid, we can proceed
         simctl.extensions.start(device.id)

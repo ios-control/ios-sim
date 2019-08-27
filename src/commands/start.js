@@ -7,7 +7,7 @@ class StartCommand extends BaseCommand {
   async run () {
     const { flags } = this.parse(StartCommand)
 
-    let device = getDeviceFromDeviceTypeId(flags.devicetypeid)
+    const device = getDeviceFromDeviceTypeId(flags.devicetypeid)
     simctl.extensions.start(device.id)
   }
 }

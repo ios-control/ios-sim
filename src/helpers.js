@@ -2,7 +2,7 @@ const simctl = require('simctl')
 
 function fixSimCtlList (list) {
   // Xcode 9 `xcrun simctl list devicetypes` have obfuscated names for 2017 iPhones and Apple Watches.
-  let deviceTypeNameMap = {
+  const deviceTypeNameMap = {
     'iPhone2017-A': 'iPhone 8',
     'iPhone2017-B': 'iPhone 8 Plus',
     'iPhone2017-C': 'iPhone X',
@@ -13,7 +13,7 @@ function fixSimCtlList (list) {
 
   // `iPad Pro` in iOS 9.3 has mapped to `iPad Pro (9.7 inch)`
   // `Apple TV 1080p` has mapped to `Apple TV`
-  let deviceNameMap = {
+  const deviceNameMap = {
     'Apple TV 1080p': 'Apple TV',
     'iPad Pro': 'iPad Pro (9.7-inch)'
   }
@@ -25,36 +25,36 @@ function fixSimCtlList (list) {
 }
 
 function getDeviceTypes (druntimes) {
-  let options = { silent: true }
+  const options = { silent: true }
   let list = simctl.list(options).json
   list = fixSimCtlList(list)
 
   if (!druntimes) {
     druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true, { lowerCase: true })
   }
-  let name_id_map = {}
+  const name_id_map = {}
 
   list.devicetypes.forEach(function (device) {
-    name_id_map[ filterDeviceName(device.name).toLowerCase() ] = device.identifier
+    name_id_map[filterDeviceName(device.name).toLowerCase()] = device.identifier
   })
 
   list = []
-  let remove = function (devicename, runtime) {
+  const remove = function (devicename, runtime) {
     // remove "iOS" prefix in runtime, remove prefix "com.apple.CoreSimulator.SimDeviceType." in id
-    const deviceName = name_id_map[ devicename ].replace(/^com.apple.CoreSimulator.SimDeviceType./, '')
+    const deviceName = name_id_map[devicename].replace(/^com.apple.CoreSimulator.SimDeviceType./, '')
     const runtimeName = runtime.replace(/^iOS /, '')
     list.push(`${deviceName}, ${runtimeName}`)
   }
 
-  let cur = function (devicename) {
+  const cur = function (devicename) {
     return function (runtime) {
       remove(devicename, runtime)
     }
   }
 
-  for (let deviceName in druntimes) {
-    let runtimes = druntimes[ deviceName ]
-    let dname = filterDeviceName(deviceName).toLowerCase()
+  for (const deviceName in druntimes) {
+    const runtimes = druntimes[deviceName]
+    const dname = filterDeviceName(deviceName).toLowerCase()
 
     if (!(dname in name_id_map)) {
       continue
@@ -71,7 +71,7 @@ function fixNameKey (array, mapping) {
   }
 
   return array.map(function (elem) {
-    let name = mapping[elem.name]
+    const name = mapping[elem.name]
     if (name) {
       elem.name = name
     }
@@ -101,19 +101,19 @@ function findRuntimesGroupByDeviceProperty (list, deviceProperty, availableOnly,
         }
     */
 
-  let runtimes = {}
-  let available_runtimes = {}
+  const runtimes = {}
+  const available_runtimes = {}
 
   list.runtimes.forEach(function (runtime) {
     // runtime.name should already be normalized, 'identifier' key has the namespaced name
-    available_runtimes[ runtime.name ] = (runtime.availability === '(available)')
+    available_runtimes[runtime.name] = (runtime.availability === '(available)')
   })
 
   Object.keys(list.devices).forEach(function (deviceGroup) {
     list.devices[deviceGroup].forEach(function (device) {
       // deviceGroup has not been normalized, it can either be the namespaced name, or the
       // human readable name. We normalize it
-      let normalizedRuntimeName = fixRuntimeName(deviceGroup)
+      const normalizedRuntimeName = fixRuntimeName(deviceGroup)
 
       let devicePropertyValue = device[deviceProperty]
 
@@ -143,16 +143,16 @@ function parseEnvironmentVariables (envVariables, fixsymctl) {
   envVariables = envVariables || []
   fixsymctl = typeof fixsymctl !== 'undefined' ? fixsymctl : true
 
-  let envMap = {}
+  const envMap = {}
   envVariables.forEach(function (variable) {
-    let envPair = variable.split('=', 2)
+    const envPair = variable.split('=', 2)
     if (envPair.length === 2) {
       let key = envPair[0]
-      let value = envPair[1]
+      const value = envPair[1]
       if (fixsymctl) {
         key = 'SIMCTL_CHILD_' + key
       }
-      envMap[ key ] = value
+      envMap[key] = value
     }
   })
   return envMap
@@ -161,11 +161,11 @@ function parseEnvironmentVariables (envVariables, fixsymctl) {
 // Injects specified environment variables to the process and then runs action
 // returns environment variables back to original state after action completes
 function withInjectedEnvironmentVariablesToProcess (process, envVariables, action) {
-  let oldVariables = Object.assign({}, process.env)
+  const oldVariables = Object.assign({}, process.env)
 
   // Inject additional environment variables to process
-  for (let key in envVariables) {
-    let value = envVariables[key]
+  for (const key in envVariables) {
+    const value = envVariables[key]
     process.env[key] = value
   }
 
@@ -186,13 +186,13 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
     */
 
   // the object to return
-  let ret_obj = {
+  const ret_obj = {
     name: null,
     id: null,
     runtime: null
   }
 
-  let options = { 'silent': true }
+  const options = { silent: true }
   let list = simctl.list(options).json
   list = fixSimCtlList(list)
 
@@ -205,7 +205,7 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
   // --devicetypeid is a string in the form "devicetype, runtime_version" (optional: runtime_version)
   let devicetype = null
   if (arr.length < 1) {
-    let dv = findFirstAvailableDevice(list)
+    const dv = findFirstAvailableDevice(list)
     console.error(`--devicetypeid was not specified, using first available device: ${dv.name}`)
     return dv
   } else {
@@ -216,13 +216,13 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
   }
 
   // check whether devicetype has the "com.apple.CoreSimulator.SimDeviceType." prefix, if not, add it
-  let prefix = 'com.apple.CoreSimulator.SimDeviceType.'
+  const prefix = 'com.apple.CoreSimulator.SimDeviceType.'
   if (devicetype.indexOf(prefix) !== 0) {
     devicetype = prefix + devicetype
   }
 
   // now find the devicename from the devicetype
-  let devicename_found = list.devicetypes.some(function (deviceGroup) {
+  const devicename_found = list.devicetypes.some(function (deviceGroup) {
     if (deviceGroup.identifier === devicetype) {
       ret_obj.name = deviceGroup.name
       return true
@@ -247,10 +247,10 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
   }
 
   // now find the deviceid (by runtime and devicename)
-  let deviceid_found = Object.keys(list.devices).some(function (deviceGroup) {
+  const deviceid_found = Object.keys(list.devices).some(function (deviceGroup) {
     // deviceGroup has not been normalized, it can either be the namespaced name, or the
     // human readable name. We normalize it
-    let normalizedRuntimeName = fixRuntimeName(deviceGroup)
+    const normalizedRuntimeName = fixRuntimeName(deviceGroup)
     if (normalizedRuntimeName === ret_obj.runtime) {
       return list.devices[deviceGroup].some(function (device) {
         if (filterDeviceName(device.name).toLowerCase() === filterDeviceName(ret_obj.name).toLowerCase()) {
@@ -275,9 +275,9 @@ function getDeviceFromDeviceTypeId (devicetypeid) {
 function findAvailableRuntime (list, devicename) {
   const device_name = devicename.toLowerCase()
 
-  let all_druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true, { lowerCase: true })
-  let druntime = all_druntimes[ filterDeviceName(device_name) ] || all_druntimes[ device_name ]
-  let runtime_found = druntime && druntime.length > 0
+  const all_druntimes = findRuntimesGroupByDeviceProperty(list, 'name', true, { lowerCase: true })
+  const druntime = all_druntimes[filterDeviceName(device_name)] || all_druntimes[device_name]
+  const runtime_found = druntime && druntime.length > 0
 
   if (!runtime_found) {
     throw new Error(`No available runtimes could be found for "${devicename}".`)
@@ -304,18 +304,18 @@ function findFirstAvailableDevice (list) {
     runtime: null
   }
 
-  let available_runtimes = {}
+  const available_runtimes = {}
 
   list.runtimes.forEach(function (runtime) {
     // runtime.name should already be normalized, 'identifier' key has the namespaced name
-    available_runtimes[ runtime.name ] = (runtime.availability === '(available)')
+    available_runtimes[runtime.name] = (runtime.availability === '(available)')
   })
 
   Object.keys(list.devices).some(function (deviceGroup) {
     return list.devices[deviceGroup].some(function (device) {
       // deviceGroup has not been normalized, it can either be the namespaced name, or the
       // human readable name. We normalize it
-      let normalizedRuntimeName = fixRuntimeName(deviceGroup)
+      const normalizedRuntimeName = fixRuntimeName(deviceGroup)
       if (available_runtimes[normalizedRuntimeName]) {
         ret_obj = {
           name: device.name,
@@ -337,7 +337,7 @@ function fixRuntimeName (runtimeName) {
   const match = pattern.exec(runtimeName)
 
   if (match) {
-    const [ , , os, version ] = match
+    const [, , os, version] = match
     // all or nothing -- os, version will always have a value for match
     return `${os} ${version.replace('-', '.')}`
   }

@@ -5,8 +5,8 @@ const { getdevicetypes, showdevicetypes, showsdks, install, launch, start } = re
 
 test('getdevicetypes function export', function () {
   const command = getdevicetypes
-  let spy = jest.spyOn(ShowDeviceTypesCommand, 'run').mockReturnValue(['Device1'])
-  let consoleSpy = jest.spyOn(console, 'warn')
+  const spy = jest.spyOn(ShowDeviceTypesCommand, 'run').mockReturnValue(['Device1'])
+  const consoleSpy = jest.spyOn(console, 'warn')
 
   expect(command()).toEqual(['Device1'])
   expect(consoleSpy).toHaveBeenCalledWith('ios-sim.getdevicetypes is deprecated, use ShowDeviceTypesCommand instead.')
@@ -18,8 +18,8 @@ test('getdevicetypes function export', function () {
 
 test('showdevicetypes function export', function () {
   const command = showdevicetypes
-  let spy = jest.spyOn(ShowDeviceTypesCommand.prototype, 'output').mockReturnValue('Device2\nDevice3')
-  let consoleSpy = jest.spyOn(console, 'warn')
+  const spy = jest.spyOn(ShowDeviceTypesCommand.prototype, 'output').mockReturnValue('Device2\nDevice3')
+  const consoleSpy = jest.spyOn(console, 'warn')
 
   expect(command()).toEqual('Device2\nDevice3')
   expect(consoleSpy).toHaveBeenCalledWith('ios-sim.showdevicetypes is deprecated, use ShowDeviceTypesCommand instead.')
@@ -31,8 +31,8 @@ test('showdevicetypes function export', function () {
 
 test('showsdks function export', function () {
   const command = showsdks
-  let spy = jest.spyOn(ShowSdksCommand.prototype, 'output').mockReturnValue('Runtime1\nRuntime2')
-  let consoleSpy = jest.spyOn(console, 'warn')
+  const spy = jest.spyOn(ShowSdksCommand.prototype, 'output').mockReturnValue('Runtime1\nRuntime2')
+  const consoleSpy = jest.spyOn(console, 'warn')
 
   expect(command()).toEqual('Runtime1\nRuntime2')
   expect(consoleSpy).toHaveBeenCalledWith('ios-sim.showsdks is deprecated, use ShowSdksCommand instead.')
@@ -44,8 +44,8 @@ test('showsdks function export', function () {
 
 test('install function export', function () {
   const command = install
-  let spy = jest.spyOn(InstallCommand, 'run').mockReturnValue()
-  let consoleSpy = jest.spyOn(console, 'warn')
+  const spy = jest.spyOn(InstallCommand, 'run').mockReturnValue()
+  const consoleSpy = jest.spyOn(console, 'warn')
 
   // arguments: app_path, devicetypeid, log, exit
 
@@ -64,8 +64,8 @@ test('install function export', function () {
 
 test('launch function export', function () {
   const command = launch
-  let spy = jest.spyOn(LaunchCommand, 'run').mockReturnValue()
-  let consoleSpy = jest.spyOn(console, 'warn')
+  const spy = jest.spyOn(LaunchCommand, 'run').mockReturnValue()
+  const consoleSpy = jest.spyOn(console, 'warn')
 
   // arguments: app_path, devicetypeid, log, exit, setenv, args
   expect(command('/my/app_path', 'abcdefg123', '/my/log_path', true, 'env1,env2', 'arg1,arg2')).toBeUndefined()
@@ -86,8 +86,8 @@ test('launch function export', function () {
 
 test('start function export', function () {
   const command = start
-  let spy = jest.spyOn(StartCommand, 'run').mockReturnValue()
-  let consoleSpy = jest.spyOn(console, 'warn')
+  const spy = jest.spyOn(StartCommand, 'run').mockReturnValue()
+  const consoleSpy = jest.spyOn(console, 'warn')
 
   // arguments: devicetypeid
   expect(command('abcdefg123')).toBeUndefined()

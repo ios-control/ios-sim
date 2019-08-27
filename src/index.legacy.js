@@ -27,9 +27,9 @@ module.exports = {
 
   install: (app_path, devicetypeid, log, exit) => { // legacy for backwards compatibility
     deprecatedMessage('install', 'InstallCommand')
-    let argv = [ app_path, '--devicetypeid', devicetypeid ]
+    const argv = [app_path, '--devicetypeid', devicetypeid]
     if (log) {
-      argv.push(...[ '--log', log ])
+      argv.push(...['--log', log])
     }
     if (exit) {
       argv.push('--exit')
@@ -39,18 +39,18 @@ module.exports = {
 
   launch: (app_path, devicetypeid, log, exit, setenv, args) => { // legacy for backwards compatibility
     deprecatedMessage('launch', 'LaunchCommand')
-    let argv = [ app_path, '--devicetypeid', devicetypeid ]
+    const argv = [app_path, '--devicetypeid', devicetypeid]
     if (log) {
-      argv.push(...[ '--log', log ])
+      argv.push(...['--log', log])
     }
     if (exit) {
       argv.push('--exit')
     }
     if (setenv) {
-      argv.push(...[ '--setenv', setenv ])
+      argv.push(...['--setenv', setenv])
     }
     if (args) {
-      argv.push(...[ '--args', args ])
+      argv.push(...['--args', args])
     }
 
     return LaunchCommand.run(argv)
@@ -58,7 +58,7 @@ module.exports = {
 
   start: (devicetypeid) => { // legacy for backwards compatibility
     deprecatedMessage('start', 'StartCommand')
-    let argv = [ '--devicetypeid', devicetypeid ]
+    const argv = ['--devicetypeid', devicetypeid]
 
     return StartCommand.run(argv)
   }

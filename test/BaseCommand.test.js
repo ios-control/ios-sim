@@ -36,7 +36,7 @@ describe('instance methods', () => {
 
     test('verbose flag', async () => {
       const debug = require('debug')
-      let spy = jest.spyOn(debug, 'enable').mockReturnValue()
+      const spy = jest.spyOn(debug, 'enable').mockReturnValue()
 
       command.argv = ['--verbose']
       return command.init().then(() => {
@@ -47,7 +47,7 @@ describe('instance methods', () => {
 
     test('debug flag', async () => {
       const debug = require('debug')
-      let spy = jest.spyOn(debug, 'enable').mockReturnValue()
+      const spy = jest.spyOn(debug, 'enable').mockReturnValue()
 
       command.argv = ['--debug', 'foo,bar']
       return command.init().then(() => {
@@ -58,7 +58,7 @@ describe('instance methods', () => {
 
     test('init no flag', async () => {
       const debug = require('debug')
-      let spy = jest.spyOn(debug, 'enable').mockReturnValue()
+      const spy = jest.spyOn(debug, 'enable').mockReturnValue()
 
       command.argv = []
       return command.init().then(() => {
@@ -91,7 +91,7 @@ describe('instance methods', () => {
       const spy = jest.spyOn(debug, 'log').mockImplementation(() => {})
 
       command.error = jest.fn()
-      command.argv = [ ]
+      command.argv = []
       command.handleError('msg', new Error('an error'))
       expect(command.error).toHaveBeenCalledWith('msg: an error')
       expect(spy).not.toHaveBeenCalled()
