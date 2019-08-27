@@ -46,13 +46,13 @@
     "simctl": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
     "acorn": "^6.1.1",
     "babel-jest": "^24.9.0",
-    "babel-runtime": "^6.26.0",
     "codecov": "^3.2.0",
     "eslint": "^5.15.1",
     "eslint-config-oclif": "^1",
