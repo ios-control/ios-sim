@@ -39,7 +39,7 @@ test('showdevicetypes output', function () {
 
 // see https://github.com/ios-control/ios-sim/issues/234
 test('showdevicetypes - device key in the form of com.apple.CoreSimulator.SimRuntime.XXXX', function () {
-  const json = fixtureJson('simctl-list-issue-234.json')
+  const json = fixtureJson('issue-234/simctl-list.json')
   simctl.list = jest.fn(() => {
     return {
       json
@@ -47,6 +47,20 @@ test('showdevicetypes - device key in the form of com.apple.CoreSimulator.SimRun
   })
 
   return command.run().then((result) => {
-    expect(stdout.output).toMatch(fixtureFile('showdevicetypes-issue-234.txt'))
+    expect(stdout.output).toMatch(fixtureFile('issue-234/showdevicetypes.txt'))
+  })
+})
+
+// see https://github.com/ios-control/ios-sim/issues/262
+test('showdevicetypes - new isAvailable property', function () {
+  const json = fixtureJson('issue-262/simctl-list.json')
+  simctl.list = jest.fn(() => {
+    return {
+      json
+    }
+  })
+
+  return command.run().then((result) => {
+    expect(stdout.output).toMatch(fixtureFile('issue-262/showdevicetypes.txt'))
   })
 })

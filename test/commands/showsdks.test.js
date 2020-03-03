@@ -23,6 +23,21 @@ test('showsdks run', function () {
   })
 })
 
+// see https://github.com/ios-control/ios-sim/issues/262
+test('showsdks run (coverage for new isAvailable property in runtimes)', function () {
+  const json = fixtureJson('issue-262/simctl-list.json')
+  simctl.list = jest.fn(() => {
+    return {
+      json
+    }
+  })
+
+  return command.run().then((result) => {
+    expect(result).toMatchObject(json.runtimes)
+    expect(stdout.output).toMatch(fixtureFile('issue-262/showsdks.txt'))
+  })
+})
+
 test('showsdks output', function () {
   const json = fixtureJson('simctl-list.json')
   simctl.list = jest.fn(() => {
