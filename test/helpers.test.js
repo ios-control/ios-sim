@@ -1,7 +1,7 @@
 jest.mock('simctl')
 const simctl = require('simctl')
 
-const { getDeviceTypes, parseEnvironmentVariables, withInjectedEnvironmentVariablesToProcess, __internal } = require('../src/helpers')
+const { findFirstAvailableDevice, getDeviceTypes, parseEnvironmentVariables, withInjectedEnvironmentVariablesToProcess, __internal } = require('../src/helpers')
 
 let json
 beforeAll(() => {
@@ -164,4 +164,26 @@ test('getdevicetypes', () => { // coverage
 
   const deviceTypes = getDeviceTypes(druntimes)
   expect(deviceTypes).toMatchObject([])
+})
+
+test('findFirstAvailableDevice', () => {
+  let device, list
+
+  list = fixtureJson('simctl-list.json')
+  simctl.list = jest.fn(() => {
+    return {
+      list
+    }
+  })
+  device = { id: '0CB7F7A1-A837-4809-8951-B724D6496462', name: 'Apple Watch Series 2 - 38mm', runtime: 'watchOS 5.1' }
+  expect(findFirstAvailableDevice(list)).toEqual(device)
+
+  list = fixtureJson('issue-262/simctl-list.json')
+  simctl.list = jest.fn(() => {
+    return {
+      list
+    }
+  })
+  device = { id: '622B99AE-E57D-4435-B7C8-6A0151E68C68', name: 'iPhone 5', runtime: 'iOS 10.3' }
+  expect(findFirstAvailableDevice(list)).toEqual(device)
 })

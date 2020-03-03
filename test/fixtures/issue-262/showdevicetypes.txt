@@ -1,0 +1,38 @@
+iPhone-5, 10.3
+iPhone-5s, 10.3
+iPhone-6-Plus, 10.3
+iPhone-6, 10.3
+iPhone-6s, 10.3
+iPhone-6s-Plus, 10.3
+iPad-Air, 10.3
+iPad-Air-2, 10.3
+iPad-Pro--9-7-inch-, 13.3
+Apple-TV-1080p, tvOS 10.2
+Apple-TV-1080p, tvOS 13.3
+Apple-TV-4K-4K, tvOS 13.3
+Apple-TV-4K-1080p, tvOS 13.3
+Apple-Watch-38mm, watchOS 3.2
+Apple-Watch-42mm, watchOS 3.2
+Apple-Watch-Series-2-38mm, watchOS 3.2
+Apple-Watch-Series-2-42mm, watchOS 3.2
+Apple-Watch-Series-4-40mm, watchOS 6.1
+Apple-Watch-Series-4-44mm, watchOS 6.1
+iPhone-SE, 10.3
+iPhone-7, 10.3
+iPhone-7-Plus, 10.3
+iPad-Pro--9-7-inch-, 10.3
+iPad-Pro, 10.3
+iPad--5th-generation-, 10.3
+iPad-Pro--12-9-inch---2nd-generation-, 10.3
+iPad-Pro--10-5-inch-, 10.3
+iPhone-8, 13.3
+iPhone-8-Plus, 13.3
+Apple-Watch-Series-5-40mm, watchOS 6.1
+Apple-Watch-Series-5-44mm, watchOS 6.1
+iPhone-11, 13.3
+iPhone-11-Pro, 13.3
+iPhone-11-Pro-Max, 13.3
+iPad--7th-generation-, 13.3
+iPad-Pro--11-inch-, 13.3
+iPad-Pro--12-9-inch---3rd-generation-, 13.3
+iPad-Air--3rd-generation-, 13.3
