@@ -106,7 +106,7 @@ function findRuntimesGroupByDeviceProperty (list, deviceProperty, availableOnly,
 
   list.runtimes.forEach(function (runtime) {
     // runtime.name should already be normalized, 'identifier' key has the namespaced name
-    available_runtimes[ runtime.name ] = (runtime.availability === '(available)')
+    available_runtimes[ runtime.name ] = (runtime.availability ? (runtime.availability === '(available)') : runtime.isAvailable)
   })
 
   Object.keys(list.devices).forEach(function (deviceGroup) {
@@ -308,7 +308,7 @@ function findFirstAvailableDevice (list) {
 
   list.runtimes.forEach(function (runtime) {
     // runtime.name should already be normalized, 'identifier' key has the namespaced name
-    available_runtimes[ runtime.name ] = (runtime.availability === '(available)')
+    available_runtimes[ runtime.name ] = (runtime.availability ? (runtime.availability === '(available)') : runtime.isAvailable)
   })
 
   Object.keys(list.devices).some(function (deviceGroup) {
