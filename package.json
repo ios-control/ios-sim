@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@oclif/command": "^1.5.18",
-    "@oclif/config": "^1.13.3",
+    "@oclif/config": "^1.15.1",
     "@oclif/errors": "^1.2.2",
     "@oclif/plugin-help": "^2.2.1",
     "bplist-parser": "^0.2.0",
